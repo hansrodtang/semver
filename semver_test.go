@@ -80,6 +80,8 @@ var comparisons = []comparison{
 	{semver.Build(1, 0, 0, []string{"beta", "11"}), semver.Build(1, 0, 0, []string{"rc", "1"}), -1},
 	{semver.Build(1, 0, 0, []string{"beta", "beta"}), semver.Build(1, 0, 0, []string{"beta", "alpha"}), 1},
 	{semver.Build(1, 0, 0, []string{"rc", "1"}), semver.Build(1, 0, 0), -1},
+
+	{semver.Build(1, 0, 0, []string{"rc", "1"}), semver.Build(1, 0, 0, []string{"rc", "1"}, []string{"435345345"}), -1},
 }
 
 var badPreRelease = [][]string{
