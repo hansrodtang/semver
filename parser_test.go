@@ -24,6 +24,7 @@ var constraints = []string{
 	"5.3.5 ||4.3.5",
 	"5.3.5|| 4.3.5",
 	"5.3.5 4.3.5",
+	"M",
 }
 
 func TestParser(t *testing.T) {
