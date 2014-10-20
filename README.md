@@ -42,6 +42,13 @@ Run the benchmarks yourself with:
 go test github.com/hansrodtang/semver -bench=.
 ```
 
+## Tests
+
+Run the tests with:
+
+```
+go test -cover github.com/hansrodtang/semver
+```
 
 ## License
 
