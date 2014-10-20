@@ -1,6 +1,7 @@
 # Semantic Versioning for Go
 
 [![Build](https://img.shields.io/travis/hansrodtang/semver.svg?style=flat)](https://travis-ci.org/hansrodtang/semver) [![Coverage](https://img.shields.io/coveralls/hansrodtang/semver.svg?style=flat)](https://coveralls.io/r/hansrodtang/semver) [![Issues](https://img.shields.io/github/issues/hansrodtang/semver.svg?style=flat)](https://github.com/hansrodtang/semver/issues) [![Tip](https://img.shields.io/gratipay/hansrodtang.svg?style=flat)](https://gratipay.com/hansrodtang/)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 
 A [Semantic Versioning](http://semver.org/) library for [Go](http://golang.org).
 
@@ -13,6 +14,11 @@ Documentation on the syntax for the `Satifies()` method can be found  [here](htt
 
 ```
   go get github.com/hansrodtang/semver
+```
+For those who prefer it, you can also use [gopkg.in](http://gopkg.in):
+
+```
+  go get gopkg.in/hansrodtang/semver.v0
 ```
 
 ## Usage
