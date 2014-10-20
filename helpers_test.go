@@ -65,3 +65,45 @@ func TestLeadingZeroes(t *testing.T) {
 		}
 	}
 }
+
+func TestComparators(t *testing.T) {
+	ver1 := Build(1, 2, 4)
+	ver2 := Build(3, 2, 1)
+	ver3 := Build(2, 1, 1)
+
+	expected := false
+	if response := gt(ver1, ver2); response != expected {
+		t.Errorf("gt(%q, %q): => %t, want %t", ver1, ver2, response, expected)
+	}
+
+	expected = true
+	if response := gte(ver1, ver1); response != expected {
+		t.Errorf("gte(%q, %q): => %t, want %t", ver1, ver2, response, expected)
+	}
+
+	expected = true
+	if response := lt(ver1, ver2); response != expected {
+		t.Errorf("lt(%q, %q): => %t, want %t", ver1, ver2, response, expected)
+	}
+
+	expected = true
+	if response := lte(ver2, ver2); response != expected {
+		t.Errorf("lte(%q, %q): => %t, want %t", ver1, ver2, response, expected)
+	}
+
+	expected = false
+	if response := eq(ver1, ver2); response != expected {
+		t.Errorf("eq(%q, %q): => %t, want %t", ver1, ver2, response, expected)
+	}
+
+	expected = true
+	if response := rng(ver3, ver1, ver2); response != expected {
+		t.Errorf("rng(%q, %q, %q): => %t, want %t", ver2, ver1, ver2, response, expected)
+	}
+
+	expected = false
+	if response := rng(ver2, ver1, ver3); response != expected {
+		t.Errorf("rng(%q, %q, %q): => %t, want %t", ver2, ver1, ver2, response, expected)
+	}
+
+}
