@@ -38,5 +38,5 @@ func eq(main, other *Version) bool {
 }
 
 func rng(main, first, second *Version) bool {
-	return false
+	return gte(main, first) && lte(main, second)
 }
