@@ -47,8 +47,6 @@ func (i item) String() string {
 		return i.val
 	case i.typ >= itemVersion:
 		return fmt.Sprintf("%s", i.val)
-	case len(i.val) > 10:
-		return fmt.Sprintf("%.10q...", i.val)
 	}
 	return fmt.Sprintf("%q", i.val)
 }
@@ -211,7 +209,16 @@ func lexOperator(l *lexer) stateFn {
 }
 
 func lexRange(l *lexer) stateFn {
-	//l.backup()
+	if l.accept(string(operatorRG)) {
+		if l.accept(string(operatorRG)) {
+			l.emit(itemRange)
+			if l.peek() == operatorST {
+				l.next()
+				l.ignore()
+			}
+			return lexMain
+		}
+	}
 	if l.accept(string(operatorST)) {
 		if l.peek() == operatorRG || l.peek() == operatorHY {
 			l.ignore()
