@@ -16,6 +16,14 @@ var items = map[itemType]string{
 
 var constraints = []string{
 	"1.0 || >=2.5.0 || 5.0.0 - 7.2.3",
+	"~1.2.3",
+	"^4.5.2-alpha.1",
+	"=2.3.2",
+	"<=1.2.3",
+	"5.3.5||4.3.5",
+	"5.3.5 ||4.3.5",
+	"5.3.5|| 4.3.5",
+	"5.3.5 4.3.5",
 }
 
 func TestParser(t *testing.T) {
