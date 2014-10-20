@@ -1,6 +1,6 @@
 # Semantic Versioning for Go
 
-![Build](https://img.shields.io/travis/hansrodtang/semver.svg?style=flat)  ![Coverage](https://img.shields.io/coveralls/hansrodtang/semver.svg?style=flat) ![Issues](https://img.shields.io/github/issues/hansrodtang/semver.svg?style=flat) ![Tip](https://img.shields.io/gratipay/hansrodtang.svg?style=flat)
+[![Build](https://img.shields.io/travis/hansrodtang/semver.svg?style=flat)](https://travis-ci.org/hansrodtang/semver) [![Coverage](https://img.shields.io/coveralls/hansrodtang/semver.svg?style=flat)](https://coveralls.io/r/hansrodtang/semver) [![Issues](https://img.shields.io/github/issues/hansrodtang/semver.svg?style=flat)](https://github.com/hansrodtang/semver/issues) [![Tip](https://img.shields.io/gratipay/hansrodtang.svg?style=flat)](https://gratipay.com/hansrodtang/)
 
 A [Semantic Versioning](http://semver.org/) library for [Go](http://golang.org).
 
