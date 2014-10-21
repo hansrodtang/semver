@@ -13,6 +13,10 @@ type comparison struct {
 	expected int
 }
 
+var correctVersions = []string{
+	"1.0.3-app-beta.1",
+}
+
 var badVersions = []string{
 	"",
 	".",
@@ -172,6 +176,15 @@ func TestBadFormat(t *testing.T) {
 		if err == nil {
 			// TODO: Set up error types
 			t.Errorf("New(%q) => %v, want Error", version, err)
+		}
+	}
+}
+
+func TestCorrectFormat(t *testing.T) {
+	for _, version := range correctVersions {
+		_, err := semver.New(version)
+		if err != nil {
+			t.Errorf("New(%q) => %v, want <nil>", version, err)
 		}
 	}
 }
