@@ -109,30 +109,30 @@ func TestStringer(t *testing.T) {
 }
 
 func TestGetters(t *testing.T) {
-	expected_major := uint64(1)
-	expected_minor := uint64(2)
-	expected_patch := uint64(3)
-	expected_prerelease := "alpha.1"
-	expected_metadata := "35.45"
+	expectedMajor := uint64(1)
+	expectedMinor := uint64(2)
+	expectedPatch := uint64(3)
+	expectedPrerelease := "alpha.1"
+	expectedMetadata := "35.45"
 
-	ver := semver.Build(expected_major, expected_minor, expected_patch)
+	ver := semver.Build(expectedMajor, expectedMinor, expectedPatch)
 	ver.SetPrerelease("alpha", "1")
 	ver.SetMetadata("35", "45")
 
-	if result := ver.Major(); result != expected_major {
-		t.Errorf("%q.Major() => %q, wanted %q", ver, result, expected_major)
+	if result := ver.Major(); result != expectedMajor {
+		t.Errorf("%q.Major() => %q, wanted %q", ver, result, expectedMajor)
 	}
-	if result := ver.Minor(); result != expected_minor {
-		t.Errorf("%q.Minor() => %q, wanted %q", ver, result, expected_minor)
+	if result := ver.Minor(); result != expectedMinor {
+		t.Errorf("%q.Minor() => %q, wanted %q", ver, result, expectedMinor)
 	}
-	if result := ver.Patch(); result != expected_patch {
-		t.Errorf("%q.Patch() => %q, wanted %q", ver, result, expected_patch)
+	if result := ver.Patch(); result != expectedPatch {
+		t.Errorf("%q.Patch() => %q, wanted %q", ver, result, expectedPatch)
 	}
-	if result := ver.Prerelease(); result != expected_prerelease {
-		t.Errorf("%q.Prerelease() => %q, wanted %q", ver, result, expected_prerelease)
+	if result := ver.Prerelease(); result != expectedPrerelease {
+		t.Errorf("%q.Prerelease() => %q, wanted %q", ver, result, expectedPrerelease)
 	}
-	if result := ver.Metadata(); result != expected_metadata {
-		t.Errorf("%q.Metadata() => %q, wanted %q", ver, result, expected_metadata)
+	if result := ver.Metadata(); result != expectedMetadata {
+		t.Errorf("%q.Metadata() => %q, wanted %q", ver, result, expectedMetadata)
 	}
 }
 
@@ -177,6 +177,7 @@ func TestBadFormat(t *testing.T) {
 			// TODO: Set up error types
 			t.Errorf("New(%q) => %v, want Error", version, err)
 		}
+
 	}
 }
 
