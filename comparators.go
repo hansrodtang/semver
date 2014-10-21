@@ -38,8 +38,8 @@ func (v *Version) Compare(other *Version) int {
 func (p *prereleases) compare(other *prereleases) int {
 	for i := 0; i < len(p.values) && i < len(other.values); i++ {
 		if p.values[i] != other.values[i] {
-			if val1, ok := p.numbers[i]; ok {
-				if val2, ok := other.numbers[i]; ok {
+			if val1 := p.numbers[i]; val1 > 0 {
+				if val2 := other.numbers[i]; val2 > 0 {
 					if val1 > val2 {
 						return 1
 					}
@@ -57,7 +57,6 @@ func (p *prereleases) compare(other *prereleases) int {
 		return 0
 	} else if len(p.values) < len(other.values) {
 		return -1
-	} else {
-		return 1
 	}
+	return 1
 }

@@ -26,7 +26,7 @@ type Version struct {
 
 type prereleases struct {
 	values  []string
-	numbers map[int]uint64
+	numbers []int
 }
 
 func Build(major, minor, patch uint64, extra ...[]string) *Version {
@@ -145,9 +145,9 @@ func (v Version) Prerelease() string {
 
 func (v *Version) SetPrerelease(identifiers ...string) error {
 	var result []string
-	numbers := make(map[int]uint64)
+	var numbers []int
 
-	for i, ident := range identifiers {
+	for _, ident := range identifiers {
 		if len(ident) < 1 {
 			return errors.New("identifier is empty")
 		}
@@ -156,12 +156,13 @@ func (v *Version) SetPrerelease(identifiers ...string) error {
 			if hasLeadingZero(ident) {
 				return errors.New(fmt.Sprint("leading zeroes in numerical identifier: ", ident))
 			}
-			numbers[i] = num
+			numbers = append(numbers, int(num))
 			result = append(result, ident)
 		} else {
 			if !containsOnly(ident, alphanumeric) {
 				return errors.New(fmt.Sprint("not alphanumerical: ", ident))
 			}
+			numbers = append(numbers, -1)
 			result = append(result, ident)
 		}
 	}
