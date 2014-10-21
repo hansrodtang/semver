@@ -85,14 +85,15 @@ func New(version string) (*Version, error) {
 	var versionNumbers [3]uint64
 	for i, partial := range versions {
 
-		if num, err := strconv.ParseUint(partial, 10, 0); err != nil {
+		num, err := strconv.ParseUint(partial, 10, 0)
+		if err != nil {
 			return nil, errors.New(fmt.Sprint("expected unsigned integer: ", partial))
-		} else {
-			if hasLeadingZero(partial) {
-				return nil, errors.New(fmt.Sprint("leading zeroes in version number: ", partial))
-			}
-			versionNumbers[i] = num
 		}
+		if hasLeadingZero(partial) {
+			return nil, errors.New(fmt.Sprint("leading zeroes in version number: ", partial))
+		}
+		versionNumbers[i] = num
+
 	}
 
 	result.major = versionNumbers[0]
