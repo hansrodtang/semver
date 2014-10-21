@@ -1,5 +1,6 @@
 package semver
 
+// Compares the two supplied Versions, returning >0 for greater than, 0 for equals and <0 for less than.
 func (v *Version) Compare(other *Version) int {
 	if v.major != other.major {
 		if v.major > other.major {
