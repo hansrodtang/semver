@@ -30,6 +30,11 @@ const (
 	operatorHY = '-'
 
 	eof = -1
+
+	numbers  string = "0123456789"
+	letters         = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-"
+	allchars        = alphanum + delimiters
+	alphanum        = letters + numbers
 )
 
 type itemType int
