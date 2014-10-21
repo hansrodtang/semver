@@ -203,7 +203,6 @@ func lexOperator(l *lexer) stateFn {
 	}
 	if l.accept(string(operatorTR)) {
 		l.emit(itemOperator)
-		return lexMain
 	}
 	return lexMain
 }
@@ -242,8 +241,6 @@ func lexRange(l *lexer) stateFn {
 			}
 		}
 		l.emit(itemSet)
-		return lexMain
 	}
-
 	return lexMain
 }

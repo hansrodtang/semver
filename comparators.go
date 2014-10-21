@@ -1,7 +1,5 @@
 package semver
 
-import "strconv"
-
 func (v *Version) Compare(other *Version) int {
 	if v.major != other.major {
 		if v.major > other.major {
@@ -24,40 +22,42 @@ func (v *Version) Compare(other *Version) int {
 		return -1
 	}
 
-	if v.prerelease != nil || other.prerelease != nil {
-		return comparePreRelease(v, other)
-	}
-	return 0
-}
-
-func comparePreRelease(main, other *Version) int {
-
-	if len(main.prerelease) != 0 {
-		if len(other.prerelease) != 0 {
-			for i := 0; i < len(main.prerelease) && i < len(other.prerelease); i++ {
-				if main.prerelease[i] != other.prerelease[i] {
-					if x, err := strconv.ParseUint(main.prerelease[i], 10, 0); err == nil {
-						if y, err := strconv.ParseUint(other.prerelease[i], 10, 0); err == nil {
-							if x > y {
-								return 1
-							} else {
-								return -1
-							}
-						}
-					}
-					if main.prerelease[i] > other.prerelease[i] {
-						return 1
-					} else {
-						return -1
-					}
-				}
-			}
+	if v.prerelease == nil {
+		if other.prerelease == nil {
+			return 0
 		}
-		return -1
-	}
-	if len(other.prerelease) != 0 {
 		return 1
 	}
+	if other.prerelease == nil {
+		return -1
+	}
 
-	return 0
+	return v.prerelease.compare(other.prerelease)
+}
+
+func (p *prereleases) compare(other *prereleases) int {
+	for i := 0; i < len(p.values) && i < len(other.values); i++ {
+		if p.values[i] != other.values[i] {
+			if val1, ok := p.numbers[i]; ok {
+				if val2, ok := other.numbers[i]; ok {
+					if val1 > val2 {
+						return 1
+					}
+					return -1
+				}
+			}
+			if p.values[i] > other.values[i] {
+				return 1
+			}
+			return -1
+		}
+	}
+
+	if len(p.values) == len(other.values) {
+		return 0
+	} else if len(p.values) < len(other.values) {
+		return -1
+	} else {
+		return 1
+	}
 }

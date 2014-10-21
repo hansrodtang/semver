@@ -47,16 +47,25 @@ type Version struct {
 	major      uint64
 	minor      uint64
 	patch      uint64
-	prerelease []string
+	prerelease *prereleases
 	metadata   []string
+}
+
+type prereleases struct {
+	values  []string
+	numbers map[int]uint64
 }
 
 func Build(major, minor, patch uint64, extra ...[]string) *Version {
 	if len(extra) == 1 {
-		return &Version{major, minor, patch, extra[0], nil}
+		ver := &Version{major, minor, patch, nil, nil}
+		ver.SetPrerelease(extra[0]...)
+		return ver
 	}
 	if len(extra) > 1 {
-		return &Version{major, minor, patch, extra[0], extra[1]}
+		ver := &Version{major, minor, patch, nil, extra[1]}
+		ver.SetPrerelease(extra[0]...)
+		return ver
 	}
 	return &Version{major, minor, patch, nil, nil}
 }
@@ -158,21 +167,23 @@ func (v *Version) SetPatch(patch uint64) {
 }
 
 func (v Version) Prerelease() string {
-	return strings.Join(v.prerelease, dot)
+	return strings.Join(v.prerelease.values, dot)
 }
 
 func (v *Version) SetPrerelease(identifiers ...string) error {
 	var result []string
+	numbers := make(map[int]uint64)
 
-	for _, ident := range identifiers {
+	for i, ident := range identifiers {
 		if len(ident) < 1 {
 			return errors.New("identifier is empty")
 		}
 
-		if _, err := strconv.ParseUint(ident, 10, 0); err == nil {
+		if num, err := strconv.ParseUint(ident, 10, 0); err == nil {
 			if hasLeadingZero(ident) {
 				return errors.New(fmt.Sprint("leading zeroes in numerical identifier: ", ident))
 			}
+			numbers[i] = num
 			result = append(result, ident)
 		} else {
 			if !containsOnly(ident, alphanum) {
@@ -181,7 +192,8 @@ func (v *Version) SetPrerelease(identifiers ...string) error {
 			result = append(result, ident)
 		}
 	}
-	v.prerelease = result
+	pre := &prereleases{result, numbers}
+	v.prerelease = pre
 	return nil
 }
 

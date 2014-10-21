@@ -72,6 +72,7 @@ var comparisons = []comparison{
 	// Spec Examples #9
 	{semver.Build(1, 0, 0), semver.Build(1, 0, 0, []string{"alpha"}), 1},
 	{semver.Build(1, 0, 0, []string{"alpha"}), semver.Build(1, 0, 0, []string{"alpha", "1"}), -1},
+	{semver.Build(1, 0, 0, []string{"alpha", "1"}), semver.Build(1, 0, 0, []string{"alpha"}), 1},
 	{semver.Build(1, 0, 0, []string{"alpha", "1"}), semver.Build(1, 0, 0, []string{"alpha", "beta"}), -1},
 	{semver.Build(1, 0, 0, []string{"alpha", "beta"}), semver.Build(1, 0, 0, []string{"beta"}), -1},
 	{semver.Build(1, 0, 0, []string{"beta"}), semver.Build(1, 0, 0, []string{"beta", "2"}), -1},
@@ -81,7 +82,9 @@ var comparisons = []comparison{
 	{semver.Build(1, 0, 0, []string{"beta", "beta"}), semver.Build(1, 0, 0, []string{"beta", "alpha"}), 1},
 	{semver.Build(1, 0, 0, []string{"rc", "1"}), semver.Build(1, 0, 0), -1},
 
-	{semver.Build(1, 0, 0, []string{"rc", "1"}), semver.Build(1, 0, 0, []string{"rc", "1"}, []string{"435345345"}), -1},
+	{semver.Build(1, 0, 0, []string{"beta", "alpha", "1"}), semver.Build(1, 0, 0, []string{"beta", "alpha"}), 1},
+
+	{semver.Build(1, 0, 0, []string{"rc", "1"}), semver.Build(1, 0, 0, []string{"rc", "1"}, []string{"435345345"}), 0},
 }
 
 var badPreRelease = [][]string{
@@ -217,9 +220,11 @@ func BenchmarkCompareSimple(b *testing.B) {
 
 func BenchmarkCompareComplex(b *testing.B) {
 	const VERSION = "0.0.1-alpha.preview+123.456"
+	const VERSION2 = "0.0.1-alpha.preview+123.456"
 	v, _ := semver.New(VERSION)
+	v2, _ := semver.New(VERSION2)
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		v.Compare(v)
+		v.Compare(v2)
 	}
 }
