@@ -45,10 +45,8 @@ func (i item) String() string {
 		return "EOF"
 	case i.typ == itemError:
 		return i.val
-	case i.typ >= itemVersion:
-		return fmt.Sprintf("%s", i.val)
 	}
-	return fmt.Sprintf("%q", i.val)
+	return fmt.Sprintf("%v", i.val)
 }
 
 type lexer struct {
@@ -168,6 +166,8 @@ func lexMain(l *lexer) stateFn {
 	case r == operatorST:
 		l.backup()
 		return lexRange
+	default:
+		l.errorf("no version data found")
 	}
 	return nil
 }
