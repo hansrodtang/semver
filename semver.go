@@ -85,7 +85,7 @@ func New(version string) (*Version, error) {
 	}
 
 	if strings.Contains(version, hyphen) {
-		prerelease := strings.Split(version, hyphen)
+		prerelease := strings.SplitN(version, hyphen, 2)
 		prereleases = strings.Split(prerelease[1], dot)
 
 		if err := result.SetPrerelease(prereleases...); err != nil {
