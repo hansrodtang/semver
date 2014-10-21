@@ -38,8 +38,8 @@ if v1.Satisfies("^1.0.0") {
 
 Test | Iterations | Time
 ------------------------|-----------|------------
-BenchmarkParseSimple    | 5000000   | 356 ns/op
-BenchmarkParseComplex   | 1000000   | 2200 ns/op
+BenchmarkParseSimple    | 5000000   | 349 ns/op
+BenchmarkParseComplex   | 1000000   | 1811 ns/op
 BenchmarkCompareSimple  | 500000000 | 3.85 ns/op
 BenchmarkCompareComplex	| 100000000	| 17.3 ns/op
 
