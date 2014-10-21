@@ -182,7 +182,7 @@ func (v *Version) SetPrerelease(identifiers ...string) error {
 			numbers[i] = num
 			result = append(result, ident)
 		} else {
-			if !containsOnly(ident, alphanum) {
+			if !containsOnly(ident, alphanumeric) {
 				return errors.New(fmt.Sprint("not alphanumerical: ", ident))
 			}
 			result = append(result, ident)
@@ -205,7 +205,7 @@ func (v *Version) SetMetadata(identifiers ...string) error {
 			return errors.New("identifier is empty")
 		}
 
-		if !containsOnly(ident, alphanum) {
+		if !containsOnly(ident, alphanumeric) {
 			return errors.New(fmt.Sprint("not alphanumerical: ", ident))
 		}
 		result = append(result, ident)
