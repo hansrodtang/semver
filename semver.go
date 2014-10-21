@@ -10,14 +10,10 @@ import (
 )
 
 const (
-	numbers    string = "0123456789"
-	letters           = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-"
-	alphanum          = letters + numbers
-	dot               = "."
-	hyphen            = "-"
-	plus              = "+"
-	delimiters        = dot + hyphen + plus
-	allchars          = alphanum + delimiters
+	dot        = "."
+	hyphen     = "-"
+	plus       = "+"
+	delimiters = dot + hyphen + plus
 )
 
 type VersionGetter interface {
