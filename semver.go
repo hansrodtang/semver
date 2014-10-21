@@ -16,29 +16,6 @@ const (
 	delimiters = dot + hyphen + plus
 )
 
-type VersionGetter interface {
-	Major() uint64
-	Minor() uint64
-	Patch() uint64
-	Prerelease() string
-	PrerelaseIdentifiers() []string
-	Metadata() string
-	MetadataIdentifiers() []string
-}
-
-type VersionSetter interface {
-	SetPrerelease(...string) error
-	SetMetadata(...string) error
-	SetMajor(uint64)
-	SetMinor(uint64)
-	SetPatch(uint64)
-}
-
-type VersionGetterSetter interface {
-	VersionGetter
-	VersionSetter
-}
-
 type Version struct {
 	major      uint64
 	minor      uint64
