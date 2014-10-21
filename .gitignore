@@ -22,7 +22,8 @@ _cgo_export.*
 _testmain.go
 
 test
-coverage.out
+*.out
+*.prof
 coverage.json
 
 *.exe
