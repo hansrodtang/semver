@@ -1,3 +1,5 @@
+// Package semver provides a Semantic Versioning library for Go. It allows you to parse and compare semver version strings.
+// Covers version 2.0.0 of the semver specification.
 package semver
 
 import (
@@ -93,7 +95,6 @@ func New(version string) (*Version, error) {
 			return nil, errors.New(fmt.Sprint("leading zeroes in version number: ", partial))
 		}
 		versionNumbers[i] = num
-
 	}
 
 	result.major = versionNumbers[0]
