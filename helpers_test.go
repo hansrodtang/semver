@@ -37,14 +37,14 @@ func TestContainsOnly(t *testing.T) {
 	// Check matches
 	matchesExpected := true
 	for _, x := range containsMatches {
-		if response := containsOnly(x, set); response != matchesExpected {
+		if response := containsOnly(x, alphanumeric); response != matchesExpected {
 			t.Errorf("containsOnly(%q, %q) => %t, want %t", x, set, response, matchesExpected)
 		}
 	}
 	// Check mismatches
 	mismatchesExpected := false
 	for _, x := range containsMismatches {
-		if response := containsOnly(x, set); response != mismatchesExpected {
+		if response := containsOnly(x, alphanumeric); response != mismatchesExpected {
 			t.Errorf("containsOnly(%q, %q) => %t, want %t", x, set, response, mismatchesExpected)
 		}
 	}

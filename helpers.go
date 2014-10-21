@@ -2,10 +2,16 @@ package semver
 
 import "strings"
 
-func containsOnly(s string, set string) bool {
+type containsFunc func(rune) bool
+
+func containsOnly(s string, c containsFunc) bool {
 	return strings.IndexFunc(s, func(r rune) bool {
-		return !strings.ContainsRune(set, r)
+		return !c(r)
 	}) == -1
+}
+
+func alphanumeric(r rune) bool {
+	return (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || (r == '-')
 }
 
 func hasLeadingZero(number string) bool {
