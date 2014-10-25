@@ -229,6 +229,14 @@ func BenchmarkParseComplex(b *testing.B) {
 	}
 }
 
+func BenchmarkParseAverage(b *testing.B) {
+	l := len(correctVersions)
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		semver.New(correctVersions[n%l])
+	}
+}
+
 func BenchmarkCompareSimple(b *testing.B) {
 	const VERSION = "0.0.1"
 	v, _ := semver.New(VERSION)
@@ -246,5 +254,13 @@ func BenchmarkCompareComplex(b *testing.B) {
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		v.Compare(v2)
+	}
+}
+
+func BenchmarkCompareAverage(b *testing.B) {
+	l := len(comparisons)
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		comparisons[n%l].main.Compare(comparisons[n%l].other)
 	}
 }
