@@ -1,5 +1,10 @@
 package parser
 
+import (
+	"fmt"
+	"testing"
+)
+
 var items = map[itemType]string{
 	0: "itemVersion",
 	1: "itemOperator",
@@ -22,34 +27,34 @@ var constraints = []string{
 	"M",
 }
 
-// func TestParser(t *testing.T) {
-// 	for _, c := range constraints {
-// 		_, ch := lex("test", c)
-// 		for {
-// 			s, ok := <-ch
-// 			if ok != false {
-// 				fmt.Printf("%v: '%v' \n", items[s.typ], s)
-// 			} else {
-// 				break
-// 			}
-// 		}
-// 	}
-// }
+func TestParser(t *testing.T) {
+	for _, c := range constraints {
+		_, ch := lex("test", c)
+		for {
+			s, ok := <-ch
+			if ok != false {
+				fmt.Printf("%v: '%v' \n", items[s.typ], s)
+			} else {
+				break
+			}
+		}
+	}
+}
 
 // Poor implementation, just for initial testing.
-// func BenchmarkParser(b *testing.B) {
-// 	const VERSION = "1.0 || >=2.5.0 || 5.0.0 - 7.2.3"
-//
-// 	b.ResetTimer()
-// 	for n := 0; n < b.N; n++ {
-// 		_, ch := lex("test", VERSION)
-// 		for {
-// 			_, ok := <-ch
-// 			if ok == false {
-// 				//fmt.Printf("%v: '%v' \n", items[s.typ], s)
-// 				//} else {
-// 				break
-// 			}
-// 		}
-// 	}
-// }
+func BenchmarkParser(b *testing.B) {
+	const VERSION = "1.0 || >=2.5.0 || 5.0.0 - 7.2.3"
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		_, ch := lex("test", VERSION)
+		for {
+			_, ok := <-ch
+			if ok == false {
+				//fmt.Printf("%v: '%v' \n", items[s.typ], s)
+				//} else {
+				break
+			}
+		}
+	}
+}
