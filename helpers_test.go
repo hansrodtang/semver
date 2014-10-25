@@ -104,15 +104,6 @@ func TestComparators(t *testing.T) {
 		t.Errorf("eq(%q, %q): => %t, want %t", ver1, ver2, response, expected)
 	}
 
-	expected = true
-	if response := rng(ver3, ver1, ver2); response != expected {
-		t.Errorf("rng(%q, %q, %q): => %t, want %t", ver2, ver1, ver2, response, expected)
-	}
-
-	expected = false
-	if response := rng(ver2, ver1, ver3); response != expected {
-		t.Errorf("rng(%q, %q, %q): => %t, want %t", ver2, ver1, ver2, response, expected)
-	}
 }
 
 func TestComparatorFunc(t *testing.T) {

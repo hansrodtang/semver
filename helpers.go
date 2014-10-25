@@ -46,6 +46,3 @@ func eq(main, other *Version) bool {
 	return main.Compare(other) == 0
 }
 
-func rng2cpm(main, other *Version) satisfactionMap {
-	return satisfactionMap{main: gt, other: lt}
-}
