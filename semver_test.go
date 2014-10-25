@@ -14,7 +14,13 @@ type comparison struct {
 }
 
 var correctVersions = []string{
-	"1.0.3-app-beta.1",
+	"0.0.1-alpha.preview+123.456",
+	"1.2.3-alpha.1+123.456",
+	"1.2.3-alpha.1",
+	"1.2.3+123.456",
+	"1.2.3-alpha.b-eta+123.b-uild",
+	"1.2.3+123.b-uild",
+	"1.2.3-alpha.b-eta",
 }
 
 var badVersions = []string{
