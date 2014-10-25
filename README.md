@@ -6,6 +6,8 @@
 
 A [Semantic Versioning](http://semver.org/) library for [Go](http://golang.org).
 
+__:heavy_exclamation_mark: Still in heavy development and is not ready for usage. Please wait for the 1.0 release :heavy_exclamation_mark:__
+
 Covers version `2.0.0` of the semver specification.
 
 Documentation on the syntax for the `Satifies()` method can be found  [here](https://www.npmjs.org/doc/misc/semver.html).
