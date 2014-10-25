@@ -1,6 +1,9 @@
 package semver
 
 import (
+	"reflect"
+	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -31,6 +34,11 @@ var zeroesMatches = []string{
 	"0003",
 	"02",
 	"034",
+}
+
+func getFunctionName(i interface{}) string {
+	fname := strings.Split(runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name(), ".")
+	return fname[len(fname)-1]
 }
 
 func TestContainsOnly(t *testing.T) {
@@ -105,5 +113,22 @@ func TestComparators(t *testing.T) {
 	if response := rng(ver2, ver1, ver3); response != expected {
 		t.Errorf("rng(%q, %q, %q): => %t, want %t", ver2, ver1, ver2, response, expected)
 	}
+}
 
+func TestComparatorFunc(t *testing.T) {
+
+	v := satisfactionMap{
+		Build(1, 2, 0): gte,
+		Build(3, 3, 1): lte,
+		Build(3, 2, 1): eq,
+	}
+	ver := Build(3, 2, 1)
+
+	expected := true
+	for v, f := range v {
+		response := f(ver, v)
+		if !response {
+			t.Errorf("%v(%q,%q): => %t, want %t", getFunctionName(f), ver, v, response, expected)
+		}
+	}
 }
