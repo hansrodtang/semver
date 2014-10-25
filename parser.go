@@ -37,6 +37,19 @@ const (
 	alphanum        = letters + numbers
 )
 
+type Comparison struct {
+	action comparatorFunc
+	args   []*Version
+}
+
+var comparators = map[string]comparatorFunc{
+	string(operatorGT): gt,
+	string(operatorGE): gte,
+	string(operatorLT): lt,
+	string(operatorLE): lte,
+	string(operatorEQ): eq,
+}
+
 type itemType int
 
 type item struct {
