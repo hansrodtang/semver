@@ -38,9 +38,43 @@ const (
 	wildcards        = "Xx*"
 )
 
-type Comparison struct {
+type Node interface {
+	Run() bool
+}
+
+type NodeComparison struct {
 	action comparatorFunc
-	args   []*Version
+	arg    *Version
+}
+
+func (n NodeComparison) Run(main *Version) bool {
+	return n.action(main, n.arg)
+}
+
+type NodeRange struct {
+	comparisons []NodeSet
+}
+
+func (n NodeRange) Run(main *Version) bool {
+	for _, c := range n.comparisons {
+		if c.Run(main) != false {
+			return true
+		}
+	}
+	return false
+}
+
+type NodeSet struct {
+	comparisons []NodeComparison
+}
+
+func (n NodeSet) Run(main *Version) bool {
+	for _, c := range n.comparisons {
+		if c.Run(main) != true {
+			return false
+		}
+	}
+	return true
 }
 
 var comparators = map[string]comparatorFunc{
