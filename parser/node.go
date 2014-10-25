@@ -2,24 +2,24 @@ package parser
 
 import "github.com/hansrodtang/semver"
 
-type Node interface {
+type node interface {
 	Run() bool
 }
 
-type NodeComparison struct {
+type nodeComparison struct {
 	action comparatorFunc
 	arg    *semver.Version
 }
 
-func (n NodeComparison) Run(main *semver.Version) bool {
+func (n nodeComparison) Run(main *semver.Version) bool {
 	return n.action(main, n.arg)
 }
 
-type NodeRange struct {
-	comparisons []NodeSet
+type nodeRange struct {
+	comparisons []nodeSet
 }
 
-func (n NodeRange) Run(main *semver.Version) bool {
+func (n nodeRange) Run(main *semver.Version) bool {
 	for _, c := range n.comparisons {
 		if c.Run(main) != false {
 			return true
@@ -28,11 +28,11 @@ func (n NodeRange) Run(main *semver.Version) bool {
 	return false
 }
 
-type NodeSet struct {
-	comparisons []NodeComparison
+type nodeSet struct {
+	comparisons []nodeComparison
 }
 
-func (n NodeSet) Run(main *semver.Version) bool {
+func (n nodeSet) Run(main *semver.Version) bool {
 	for _, c := range n.comparisons {
 		if c.Run(main) != true {
 			return false
