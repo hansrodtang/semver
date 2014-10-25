@@ -22,27 +22,3 @@ func hasLeadingZero(number string) bool {
 	}
 	return false
 }
-
-type comparatorFunc func(*Version, *Version) bool
-type satisfactionMap map[*Version]comparatorFunc
-
-func gt(main, other *Version) bool {
-	return main.Compare(other) > 0
-}
-
-func gte(main, other *Version) bool {
-	return main.Compare(other) >= 0
-}
-
-func lt(main, other *Version) bool {
-	return main.Compare(other) < 0
-}
-
-func lte(main, other *Version) bool {
-	return main.Compare(other) <= 0
-}
-
-func eq(main, other *Version) bool {
-	return main.Compare(other) == 0
-}
-
