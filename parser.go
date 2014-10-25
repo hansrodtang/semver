@@ -31,10 +31,11 @@ const (
 
 	eof = -1
 
-	numbers  string = "0123456789"
-	letters         = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-"
-	allchars        = alphanum + delimiters
-	alphanum        = letters + numbers
+	numbers   string = "0123456789"
+	letters          = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-"
+	allchars         = alphanum + delimiters
+	alphanum         = letters + numbers
+	wildcards        = "Xx*"
 )
 
 type Comparison struct {
