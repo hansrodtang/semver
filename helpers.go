@@ -23,6 +23,9 @@ func hasLeadingZero(number string) bool {
 	return false
 }
 
+type comparatorFunc func(*Version, *Version) bool
+type satisfactionMap map[*Version]comparatorFunc
+
 func gt(main, other *Version) bool {
 	return main.Compare(other) > 0
 }
@@ -43,6 +46,6 @@ func eq(main, other *Version) bool {
 	return main.Compare(other) == 0
 }
 
-func rng(main, first, second *Version) bool {
-	return gte(main, first) && lte(main, second)
+func rng2cpm(main, other *Version) satisfactionMap {
+	return satisfactionMap{main: gt, other: lt}
 }
