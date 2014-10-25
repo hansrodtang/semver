@@ -15,8 +15,8 @@ func getFunctionName(i interface{}) string {
 }
 
 func TestComparators(t *testing.T) {
-	ver1 := Build(1, 2, 4)
-	ver2 := Build(3, 2, 1)
+	ver1 := semver.Build(1, 2, 4)
+	ver2 := semver.Build(3, 2, 1)
 
 	expected := false
 	if response := gt(ver1, ver2); response != expected {
