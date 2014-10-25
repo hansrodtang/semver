@@ -28,6 +28,7 @@ _testmain.go
 test
 *.out
 *.prof
+*.coverprofile
 coverage.json
 
 *.exe
