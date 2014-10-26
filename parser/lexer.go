@@ -180,7 +180,6 @@ func lexMain(l *lexer) stateFn {
 	default:
 		return l.errorf("no version data found")
 	}
-	return nil
 }
 
 func lexVersion(l *lexer) stateFn {
