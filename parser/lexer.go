@@ -10,9 +10,10 @@ type stateFn func(*lexer) stateFn
 
 const (
 	itemVersion  itemType = iota // Version string
-	itemOperator                 // <, <=, >, >= =, ~, ^
+	itemOperator                 // <, <=, >, >= =
 	itemSet                      // Set seperated by whitespace
-	itemRange                    // || , -
+	itemRange                    // || ,
+	itemAdvanced                 // ~, ^, -, x-ranges
 	itemError
 	itemEOF // End of input
 
