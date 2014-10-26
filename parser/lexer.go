@@ -22,6 +22,7 @@ const (
 	operatorLT = '<'
 	operatorLE = "<="
 	operatorEQ = '='
+
 	operatorTR = '~'
 	operatorCR = '^'
 
@@ -145,7 +146,6 @@ func (l *lexer) errorf(format string, args ...interface{}) stateFn {
 }
 
 func lexMain(l *lexer) stateFn {
-	// Correctly reached EOF.
 	switch r := l.next(); {
 
 	case r == eof || r == '\n':
