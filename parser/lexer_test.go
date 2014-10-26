@@ -6,12 +6,13 @@ import (
 )
 
 var items = map[itemType]string{
-	0: "itemVersion",
-	1: "itemOperator",
-	2: "itemSet",
-	3: "itemRange",
-	4: "itemError",
-	5: "itemEOF",
+	itemVersion:  "itemVersion",
+	itemOperator: "itemOperator",
+	itemSet:      "itemSet",
+	itemRange:    "itemRange",
+	itemAdvanced: "itemAdvanced",
+	itemError:    "itemError",
+	itemEOF:      "itemEOF",
 }
 
 var constraints = []string{
