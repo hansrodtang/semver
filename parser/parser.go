@@ -44,13 +44,6 @@ func handleOperator(p *parser) nodeComparison {
 		i := p.next()
 
 		switch i.typ {
-		case itemEOF:
-			p.backup()
-			return nc
-		case itemSet:
-			return nc
-		case itemRange:
-			return nc
 		case itemVersion:
 			ver, _ := semver.New(i.val)
 			nc = nodeComparison{eq, ver}
