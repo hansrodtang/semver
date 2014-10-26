@@ -30,7 +30,7 @@ var constraints = []string{
 }
 
 // Just for debugging, not a real test. REMOVE THIS.
-func TestParser(t *testing.T) {
+func TestLexer(t *testing.T) {
 	for _, c := range constraints {
 		_, ch := lex(c)
 		for {
@@ -45,8 +45,26 @@ func TestParser(t *testing.T) {
 }
 
 // Poor implementation, just for initial testing.
-func BenchmarkParser(b *testing.B) {
-	const VERSION = "1.0 || >=2.5.0 || 5.0.0 - 7.2.3"
+func BenchmarkLexerComplex(b *testing.B) {
+	const VERSION = "1.0.0 || >=2.5.0 || 5.0.0 - 7.2.3 || ~4.3.1 ^2.1.1"
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		_, ch := lex(VERSION)
+		for {
+			_, ok := <-ch
+			if ok == false {
+				//fmt.Printf("%v: '%v' \n", items[s.typ], s)
+				//} else {
+				break
+			}
+		}
+	}
+}
+
+// Poor implementation, just for initial testing.
+func BenchmarkLexerSimple(b *testing.B) {
+	const VERSION = "1.0.0"
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
