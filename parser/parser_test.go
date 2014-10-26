@@ -21,20 +21,7 @@ var parsables = map[string][]test{
 	},
 }
 
-var parsable = "1.2.7 || >=1.2.9 <2.0.0"
-
-var matches = []*semver.Version{
-	semver.Build(1, 2, 7),
-	semver.Build(1, 2, 9),
-	semver.Build(1, 4, 6),
-}
-
-var mismatches = []*semver.Version{
-	semver.Build(1, 2, 8),
-	semver.Build(2, 0, 0),
-}
-
-func TestParse(t *testing.T) {
+func TestParser(t *testing.T) {
 
 	for k, v := range parsables {
 		n, _ := Parse(k)
