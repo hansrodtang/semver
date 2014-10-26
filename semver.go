@@ -216,6 +216,6 @@ func (v *Version) SetMetadata(identifiers ...string) error {
 // Satifies accepts a set of comparators and version numbers as a string.
 // The syntax for the string is documented here: https://www.npmjs.org/doc/misc/semver.html
 // Returns true if Version matches the comparators, false if it does not.
-func (v Version) Satifies(other string) bool {
-	return true
+func (v Version) Satifies(requirements string) (bool, error) {
+	return false, nil
 }
