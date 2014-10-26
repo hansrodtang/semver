@@ -131,6 +131,13 @@ func (l *lexer) accept(valid string) bool {
 	return false
 }
 
+func (l *lexer) check(valid string) bool {
+	if strings.IndexRune(valid, l.peek()) >= 0 {
+		return true
+	}
+	return false
+}
+
 // acceptRun consumes a run of runes from the valid set.
 func (l *lexer) acceptRun(valid string) {
 	for strings.IndexRune(valid, l.next()) >= 0 {
