@@ -15,45 +15,215 @@ var items = map[itemType]string{
 	itemEOF:      "itemEOF",
 }
 
-var constraints = []string{
-	"1.0.0 || >=2.5.0 || 5.0.0 - 7.2.3",
-	"~1.2.3",
-	"^4.5.2-alpha.1",
-	"=2.3.2",
-	"<=1.2.3",
-	"5.3.5||4.3.5",
-	"5.3.5 ||4.3.5",
-	"5.3.5|| 4.3.5",
-	"5.3.5 4.3.5",
-	">=1.2.3",
-
-	">= 1.2.3",
-	"1.2.3 >=",
-	"5.3.5 |1| 4.3.5",
-	"5. 4.4",
-	"<1<1",
-	"<1||",
-	"M",
-	"1.0",
-	"1.x",
-	"1.*.2",
-	"*.1.2",
+type lexerTestables struct {
+	expected bool
+	value    string
+	result   []itemType
 }
 
-// Just for debugging, not a real test. REMOVE THIS.
+var constraints = []lexerTestables{
+	{true, "1.0.0 || >=2.5.0 || 5.0.0 - 7.2.3",
+		[]itemType{
+			itemVersion,
+			itemRange,
+			itemOperator,
+			itemVersion,
+			itemRange,
+			itemVersion,
+			itemAdvanced,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "~1.2.3",
+		[]itemType{
+			itemAdvanced,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "^4.5.2-alpha.1",
+		[]itemType{
+			itemAdvanced,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "=2.3.2",
+		[]itemType{
+			itemOperator,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "<=1.2.3",
+		[]itemType{
+			itemOperator,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "5.3.5||4.3.5",
+		[]itemType{
+			itemVersion,
+			itemRange,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "5.3.5 ||4.3.5",
+		[]itemType{
+			itemVersion,
+			itemRange,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "5.3.5|| 4.3.5",
+		[]itemType{
+			itemVersion,
+			itemRange,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, "5.3.5 4.3.5",
+		[]itemType{
+			itemVersion,
+			itemSet,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	{true, ">=1.2.3",
+		[]itemType{
+			itemOperator,
+			itemVersion,
+			itemEOF,
+		},
+	},
+	//
+	{false, "~ 1.2.3",
+		[]itemType{
+			itemAdvanced,
+			itemError,
+		},
+	},
+	{false, ">= 1.2.3",
+		[]itemType{
+			itemError,
+		},
+	},
+	{false, "1.2.3 >=",
+		[]itemType{
+			itemVersion,
+			itemSet,
+			itemError,
+		},
+	},
+	{false, "5.3.5 |1| 4.3.5",
+		[]itemType{
+			itemVersion,
+			itemError,
+		},
+	},
+	{false, "5. 4.4",
+		[]itemType{
+			itemError,
+		},
+	},
+	{false, "<1<1",
+		[]itemType{
+			itemOperator,
+			itemError,
+		},
+	},
+	{false, "<1||",
+		[]itemType{
+			itemOperator,
+			itemVersion,
+			itemError,
+		},
+	},
+	{false, "M",
+		[]itemType{
+			itemError,
+		},
+	},
+	{true, "1.0",
+		[]itemType{
+			itemAdvanced,
+			itemEOF,
+		},
+	},
+	{true, "1.x",
+		[]itemType{
+			itemAdvanced,
+			itemEOF,
+		},
+	},
+	{false, "1.x+98uihuhyg",
+		[]itemType{
+			itemError,
+		},
+	},
+	{true, "1.*.2",
+		[]itemType{
+			itemAdvanced,
+			itemEOF,
+		},
+	},
+	{true, "1.*.2-beta",
+		[]itemType{
+			itemAdvanced,
+			itemEOF,
+		},
+	},
+	{true, "*.1.2",
+		[]itemType{
+			itemAdvanced,
+			itemEOF,
+		},
+	},
+	{false, "1x.2.*",
+		[]itemType{
+			itemError,
+		},
+	},
+	{false, "1.x2.*",
+		[]itemType{
+			itemError,
+		},
+	},
+	{false, "1...1",
+		[]itemType{
+			itemError,
+		},
+	},
+	{false, "1.x.",
+		[]itemType{
+			itemError,
+		},
+	},
+}
+
 func TestLexer(t *testing.T) {
 	for _, c := range constraints {
-		_, ch := lex(c)
-		for {
-			s, ok := <-ch
-			if ok != false {
-				fmt.Printf("%v: '%v' \n", items[s.typ], s)
-				if s.typ == itemEOF || s.typ == itemError {
-					fmt.Println("")
-				}
-			} else {
-				break
+		_, ch := lex(c.value)
+		result := true
+		x := 0
+		for i := range ch {
+
+			result = (i.typ != itemError)
+
+			if i.typ != c.result[x] {
+				t.Errorf("lex(%q) => %v, want %v \n", c.value, items[i.typ], items[c.result[x]])
+				fmt.Printf("%v:%v: %v \n", c.value, items[i.typ], i)
 			}
+			x++
+		}
+		if result != c.expected {
+			t.Errorf("lex(%q) => %t, want %t \n", c.value, result, c.expected)
 		}
 	}
 }
