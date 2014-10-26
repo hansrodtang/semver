@@ -193,22 +193,12 @@ func lexVersion(l *lexer) stateFn {
 }
 
 func lexOperator(l *lexer) stateFn {
-
-	if l.accept(string(operatorGT)) {
-		l.accept(string(operatorEQ))
-		l.emit(itemOperator)
-		return lexMain
+	l.accept(string(operatorGT) + string(operatorLT))
+	l.accept(string(operatorEQ))
+	if l.accept(string(operatorST)) {
+		return l.errorf("invalid character:%v: %q", l.pos, operatorST)
 	}
-	if l.accept(string(operatorLT)) {
-		l.accept(string(operatorEQ))
-		l.emit(itemOperator)
-		return lexMain
-	}
-	if l.accept(string(operatorEQ)) {
-		l.emit(itemOperator)
-		return lexMain
-	}
-	}
+	l.emit(itemOperator)
 	return lexMain
 }
 
