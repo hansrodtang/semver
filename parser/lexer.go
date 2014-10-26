@@ -175,81 +175,98 @@ func lexMain(l *lexer) stateFn {
 		return lexOperator
 	case r == operatorTR:
 		l.backup()
-		return lexRange
+		return lexAdvancedRange
 	case r == operatorCR:
 		l.backup()
-		return lexRange
+		return lexAdvancedRange
 	case r == operatorRG:
 		l.backup()
 		return lexRange
 	case r == operatorST:
 		l.backup()
-		return lexRange
+		return lexSet
 	default:
-		return l.errorf("no version data found")
+		return l.errorf("invalid character:%v: %q", l.pos, string(r))
 	}
 }
 
 func lexVersion(l *lexer) stateFn {
-	l.acceptRun(numbers + dot)
-	if l.accept("+-") {
-		l.acceptRun(allchars)
+	l.acceptRun(numbers)
+
+	if l.accept(dot) {
+		if l.accept(numbers) {
+			l.acceptRun(numbers)
+
+			if l.accept(dot) {
+				if l.accept(numbers) {
+					l.acceptRun(numbers)
+
+					if l.accept("+-") {
+						l.acceptRun(allchars)
+					}
+					l.emit(itemVersion)
+					return lexMain
+				}
+			}
+		}
 	}
-	l.emit(itemVersion)
-	return lexMain
+	return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 }
 
 func lexOperator(l *lexer) stateFn {
 	l.accept(string(operatorGT) + string(operatorLT))
 	l.accept(string(operatorEQ))
-	if l.accept(string(operatorST)) {
-		return l.errorf("invalid character:%v: %q", l.pos, operatorST)
+	if !l.check(numbers) {
+		return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 	}
 	l.emit(itemOperator)
 	return lexMain
 }
 
-func lexRange(l *lexer) stateFn {
-	if l.accept(string(operatorRG)) {
-		if l.accept(string(operatorRG)) {
-			l.emit(itemRange)
-			if l.peek() == operatorST {
-				l.next()
-				l.ignore()
-			}
-			return lexMain
-		}
-	}
+func lexSet(l *lexer) stateFn {
 	if l.accept(string(operatorST)) {
-		if l.peek() == operatorRG || l.peek() == operatorHY {
+		if l.peek() == operatorRG {
 			l.ignore()
-			if l.accept(string(operatorRG)) {
-				if l.accept(string(operatorRG)) {
-					l.emit(itemRange)
-					if l.peek() == operatorST {
-						l.next()
-						l.ignore()
-					}
-					return lexMain
-				}
-			}
-			if l.accept(string(operatorHY)) {
-				l.emit(itemRange)
-				if l.peek() == operatorST {
-					l.next()
-					l.ignore()
-				}
-				return lexMain
-			}
+			return lexRange
+		}
+		if l.peek() == operatorHY {
+			l.ignore()
+			return lexAdvancedRange
 		}
 		l.emit(itemSet)
 	}
-	if l.accept(string(operatorCR)) {
+	return lexMain
+}
+
+func lexRange(l *lexer) stateFn {
+	l.accept(string(operatorRG))
+	if l.accept(string(operatorRG)) {
 		l.emit(itemRange)
+		if l.peek() == operatorST {
+			l.next()
+			l.ignore()
+		}
+		return lexMain
+	}
+	return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+
+}
+
+func lexAdvancedRange(l *lexer) stateFn {
+	if l.accept(string(operatorHY)) {
+		l.emit(itemAdvanced)
+		if l.peek() == operatorST {
+			l.next()
+			l.ignore()
+		}
+		return lexMain
+	}
+	if l.accept(string(operatorCR)) {
+		l.emit(itemAdvanced)
 		return lexMain
 	}
 	if l.accept(string(operatorTR)) {
-		l.emit(itemRange)
+		l.emit(itemAdvanced)
 	}
 	return lexMain
 }
