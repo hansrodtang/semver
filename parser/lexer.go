@@ -167,10 +167,10 @@ func lexMain(l *lexer) stateFn {
 		return lexOperator
 	case r == operatorTR:
 		l.backup()
-		return lexOperator
+		return lexRange
 	case r == operatorCR:
 		l.backup()
-		return lexOperator
+		return lexRange
 	case r == operatorRG:
 		l.backup()
 		return lexRange
@@ -208,12 +208,6 @@ func lexOperator(l *lexer) stateFn {
 		l.emit(itemOperator)
 		return lexMain
 	}
-	if l.accept(string(operatorCR)) {
-		l.emit(itemOperator)
-		return lexMain
-	}
-	if l.accept(string(operatorTR)) {
-		l.emit(itemOperator)
 	}
 	return lexMain
 }
@@ -252,6 +246,13 @@ func lexRange(l *lexer) stateFn {
 			}
 		}
 		l.emit(itemSet)
+	}
+	if l.accept(string(operatorCR)) {
+		l.emit(itemRange)
+		return lexMain
+	}
+	if l.accept(string(operatorTR)) {
+		l.emit(itemRange)
 	}
 	return lexMain
 }
