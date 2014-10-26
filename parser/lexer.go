@@ -178,7 +178,7 @@ func lexMain(l *lexer) stateFn {
 		l.backup()
 		return lexRange
 	default:
-		l.errorf("no version data found")
+		return l.errorf("no version data found")
 	}
 	return nil
 }
