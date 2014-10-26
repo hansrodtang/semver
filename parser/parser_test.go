@@ -19,6 +19,10 @@ var parsables = map[string][]test{
 		{false, semver.Build(1, 2, 8)},
 		{false, semver.Build(2, 0, 0)},
 	},
+	//"1.2 <1.2.9 || >2.0.0": {
+	//	{false, semver.Build(1,2,10)},
+	//  {true, semver.Build(1,2,8)}
+	//}
 }
 
 func TestParser(t *testing.T) {
