@@ -16,7 +16,7 @@ var items = map[itemType]string{
 }
 
 var constraints = []string{
-	"1.0 || >=2.5.0 || 5.0.0 - 7.2.3",
+	"1.0.0 || >=2.5.0 || 5.0.0 - 7.2.3",
 	"~1.2.3",
 	"^4.5.2-alpha.1",
 	"=2.3.2",
@@ -26,8 +26,18 @@ var constraints = []string{
 	"5.3.5|| 4.3.5",
 	"5.3.5 4.3.5",
 	">=1.2.3",
+
 	">= 1.2.3",
+	"1.2.3 >=",
+	"5.3.5 |1| 4.3.5",
+	"5. 4.4",
+	"<1<1",
+	"<1||",
 	"M",
+	"1.0",
+	"1.x",
+	"1.*.2",
+	"*.1.2",
 }
 
 // Just for debugging, not a real test. REMOVE THIS.
@@ -38,6 +48,9 @@ func TestLexer(t *testing.T) {
 			s, ok := <-ch
 			if ok != false {
 				fmt.Printf("%v: '%v' \n", items[s.typ], s)
+				if s.typ == itemEOF || s.typ == itemError {
+					fmt.Println("")
+				}
 			} else {
 				break
 			}
