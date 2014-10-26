@@ -24,12 +24,14 @@ var constraints = []string{
 	"5.3.5 ||4.3.5",
 	"5.3.5|| 4.3.5",
 	"5.3.5 4.3.5",
+	">=1.2.3",
 	"M",
 }
 
+// Just for debugging, not a real test. REMOVE THIS.
 func TestParser(t *testing.T) {
 	for _, c := range constraints {
-		_, ch := lex("test", c)
+		_, ch := lex(c)
 		for {
 			s, ok := <-ch
 			if ok != false {
@@ -47,7 +49,7 @@ func BenchmarkParser(b *testing.B) {
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		_, ch := lex("test", VERSION)
+		_, ch := lex(VERSION)
 		for {
 			_, ok := <-ch
 			if ok == false {

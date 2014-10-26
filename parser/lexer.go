@@ -70,9 +70,8 @@ type lexer struct {
 	items chan item // channel of scanned items.
 }
 
-func lex(name, input string) (*lexer, chan item) {
+func lex(input string) (*lexer, chan item) {
 	l := &lexer{
-		name:  name,
 		input: input,
 		items: make(chan item),
 	}
