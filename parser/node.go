@@ -3,8 +3,10 @@ package parser
 import "github.com/hansrodtang/semver"
 
 type node interface {
-	Run() bool
+	Run(*semver.Version) bool
 }
+
+type nodeContainer node
 
 type nodeComparison struct {
 	action comparatorFunc
@@ -16,11 +18,11 @@ func (n nodeComparison) Run(main *semver.Version) bool {
 }
 
 type nodeRange struct {
-	comparisons []nodeSet
+	sets []nodeSet
 }
 
 func (n nodeRange) Run(main *semver.Version) bool {
-	for _, c := range n.comparisons {
+	for _, c := range n.sets {
 		if c.Run(main) != false {
 			return true
 		}
