@@ -30,6 +30,25 @@ func TestParser(t *testing.T) {
 				t.Errorf("%q.Run(%q) => %t, want %t", k, x.version, response, x.expected)
 			}
 		}
+	}
+}
 
+func BenchmarkParser(b *testing.B) {
+	const VERSION = "1.2.7 || >=1.2.9 <2.0.0"
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		Parse(VERSION)
+	}
+}
+
+func BenchmarkRunner(b *testing.B) {
+	const VERSION = "1.2.7 || >=1.2.9 <2.0.0"
+	p, _ := Parse(VERSION)
+	v := semver.Build(2, 0, 0)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		p.Run(v)
 	}
 }
