@@ -145,8 +145,7 @@ func TestLexer(t *testing.T) {
 			result = (i.typ != itemError)
 
 			if i.typ != c.result[x] {
-				t.Logf("lex(%v) => %v, want %v \n", cyan(c.value), items[i.typ], items[c.result[x]])
-				t.Logf("lex(%v) => %v: %v \n", cyan(c.value), items[i.typ], yellow(i))
+				t.Logf("lex(%v) => %v(%v), want %v \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x]])
 			}
 			x++
 		}
