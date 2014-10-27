@@ -1,6 +1,10 @@
 package parser
 
-import "github.com/hansrodtang/semver"
+import (
+	"errors"
+
+	"github.com/hansrodtang/semver"
+)
 
 type parser struct {
 	l      *lexer
@@ -11,7 +15,11 @@ type parser struct {
 
 func (p *parser) run() (node, error) {
 
-	return handleRange(p), nil
+	n := handleRange(p)
+	if n != nil {
+		return n, nil
+	}
+	return nil, errors.New("Something bad")
 
 }
 
@@ -103,6 +111,8 @@ func handleRange(p *parser) node {
 	for {
 		i := p.next()
 		switch i.typ {
+		case itemError:
+			return nil
 		case itemEOF:
 			return rng
 		default:
