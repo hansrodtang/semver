@@ -38,27 +38,42 @@ func Parse(input string) (node, error) {
 
 }
 
-func handleOperator(p *parser) nodeComparison {
-	var nc nodeComparison
+func handleOperator(p *parser) []nodeComparison {
+	var nc []nodeComparison
 	for {
 		i := p.next()
 
 		switch i.typ {
 		case itemVersion:
-			ver, _ := semver.New(i.val)
-			nc = nodeComparison{eq, ver}
+			ver1, _ := semver.New(i.val)
+			if i = p.next(); i.typ == itemAdvanced {
+				if i.val == string(operatorHY) {
+					i = p.next()
+					ver2, _ := semver.New(i.val)
+					return hy2op(ver1, ver2)
+				}
+			}
+			p.backup()
+			nc = []nodeComparison{{eq, ver1}}
 			return nc
+		case itemAdvanced:
+			if i.val == string(operatorTR) {
+				i := p.next()
+				return tld2op(i)
+			}
+		case itemXRange:
+			return xr2op(i)
 		default:
 			v := p.next()
 			ver, _ := semver.New(v.val)
-			nc = nodeComparison{comparators[i.val], ver}
+			nc = []nodeComparison{{comparators[i.val], ver}}
 			return nc
 		}
 	}
 }
 
 func handleSet(p *parser) nodeSet {
-	var nc nodeComparison
+	var nc []nodeComparison
 	var set nodeSet
 
 	for {
@@ -75,7 +90,7 @@ func handleSet(p *parser) nodeSet {
 		default:
 			p.backup()
 			nc = handleOperator(p)
-			set.comparisons = append(set.comparisons, nc)
+			set.comparisons = append(set.comparisons, nc...)
 
 		}
 	}
