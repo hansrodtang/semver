@@ -1,8 +1,9 @@
 package parser
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/fatih/color"
 )
 
 var items = map[itemType]string{
@@ -207,6 +208,9 @@ var constraints = []lexerTestables{
 	},
 }
 
+var cyan = color.New(color.FgCyan).SprintFunc()
+var yellow = color.New(color.FgYellow).SprintFunc()
+
 func TestLexer(t *testing.T) {
 	for _, c := range constraints {
 		_, ch := lex(c.value)
@@ -217,13 +221,13 @@ func TestLexer(t *testing.T) {
 			result = (i.typ != itemError)
 
 			if i.typ != c.result[x] {
-				t.Errorf("lex(%q) => %v, want %v \n", c.value, items[i.typ], items[c.result[x]])
-				fmt.Printf("%v:%v: %v \n", c.value, items[i.typ], i)
+				t.Logf("lex(%v) => %v, want %v \n", cyan(c.value), items[i.typ], items[c.result[x]])
+				t.Logf("lex(%v) => %v: %v \n", cyan(c.value), items[i.typ], yellow(i))
 			}
 			x++
 		}
 		if result != c.expected {
-			t.Errorf("lex(%q) => %t, want %t \n", c.value, result, c.expected)
+			t.Logf("lex(%v) => %t, want %t \n", cyan(c.value), result, c.expected)
 		}
 	}
 }
