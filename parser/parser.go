@@ -25,7 +25,7 @@ func (p *parser) run() (node, error) {
 
 func (p *parser) next() item {
 	if p.pos >= len(p.ibuf) {
-		i := l.nextItem()
+		i := p.l.nextItem()
 		p.ibuf = append(p.ibuf, i)
 		p.pos++
 		return i
