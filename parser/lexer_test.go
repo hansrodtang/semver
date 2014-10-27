@@ -91,7 +91,7 @@ var constraints = []*lexerTestables{
 		results{itemAdvanced},
 	},
 	{true, "1.*.2 || 1.x.4",
-		results{itemAdvanced, itemSet, itemAdvanced},
+		results{itemAdvanced, itemRange, itemAdvanced},
 	},
 	{true, "1.*.2-beta",
 		results{itemAdvanced},
