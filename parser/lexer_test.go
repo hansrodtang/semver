@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/fatih/color"
@@ -203,6 +204,15 @@ func TestLexer(t *testing.T) {
 			t.Errorf("lex(%v) => %t, want %t \n", cyan(c.value), result, c.expected)
 		}
 	}
+}
+
+func TestStringer(t *testing.T) {
+	expected := "itemError(success)"
+	result := fmt.Sprint(item{itemError, "success"})
+	if result != expected {
+		t.Errorf("String() => %q, want %q \n", result, expected)
+	}
+
 }
 
 // Poor implementation, just for initial testing.
