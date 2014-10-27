@@ -203,19 +203,19 @@ func TestLexer(t *testing.T) {
 
 			if len(c.result) > x {
 				if i.typ != c.result[x].itype {
-					t.Logf("lex(%v) => %v(%v), want %v(%v) \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x].itype], yellow(c.result[x].value))
+					t.Errorf("lex(%v) => %v(%v), want %v(%v) \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x].itype], yellow(c.result[x].value))
 				} else if i.val != c.result[x].value {
 					if !(i.typ == itemError || i.typ == itemEOF) {
-						t.Logf("lex(%v) => %v(%v), want %v(%v) \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x].itype], yellow(c.result[x].value))
+						t.Errorf("lex(%v) => %v(%v), want %v(%v) \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x].itype], yellow(c.result[x].value))
 					}
 				}
 			} else {
-				t.Logf("lex(%v) => %v(%v), want <nil>\n", cyan(c.value), items[i.typ], yellow(i))
+				t.Errorf("lex(%v) => %v(%v), want <nil>\n", cyan(c.value), items[i.typ], yellow(i))
 			}
 			x++
 		}
 		if result != c.expected {
-			t.Logf("lex(%v) => %t, want %t \n", cyan(c.value), result, c.expected)
+			t.Errorf("lex(%v) => %t, want %t \n", cyan(c.value), result, c.expected)
 		}
 	}
 }
