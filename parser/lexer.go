@@ -185,6 +185,8 @@ func lexMain(l *lexer) stateFn {
 	case r == operatorST:
 		l.backup()
 		return lexSet
+	case l.check(wildcards):
+		return lexAdvancedVersion
 	default:
 		return l.errorf("invalid character:%v: %q", l.pos, string(r))
 	}
@@ -210,7 +212,8 @@ func lexVersion(l *lexer) stateFn {
 			}
 		}
 	}
-	return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+	l.pos = l.start
+	return lexAdvancedVersion
 }
 
 func lexOperator(l *lexer) stateFn {
