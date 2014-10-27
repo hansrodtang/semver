@@ -32,18 +32,18 @@ func eq(main, other *semver.Version) bool {
 	return main.Compare(other) == 0
 }
 
-func hy2op(v1, v2 *semver.Version) []nodeComparison {
-	return []nodeComparison{
-		{gte, v1},
-		{lte, v2},
+func hy2op(v1, v2 *semver.Version) node {
+	return nodeSet{
+		nodeComparison{gte, v1},
+		nodeComparison{lte, v2},
 	}
 }
 
-func cr2op(i item) []nodeComparison {
+func cr2op(i item) node {
 	return nil
 }
 
-func tld2op(i item) []nodeComparison {
+func tld2op(i item) node {
 	if i.typ == itemXRange {
 		return xr2op(i)
 	}
@@ -51,13 +51,13 @@ func tld2op(i item) []nodeComparison {
 	v2 := *v1
 	v2.IncrementMinor()
 	v2.SetPatch(0)
-	return []nodeComparison{
-		{gte, v1},
-		{lt, &v2},
+	return nodeSet{
+		nodeComparison{gte, v1},
+		nodeComparison{lt, &v2},
 	}
 }
 
-func xr2op(i item) []nodeComparison {
+func xr2op(i item) node {
 
 	version := i.val
 	s := strings.Split(version, dot)
@@ -76,24 +76,24 @@ func xr2op(i item) []nodeComparison {
 	if err1 != nil {
 		v2.SetMinor(0)
 		v2.SetPatch(0)
-		return []nodeComparison{
-			{gte, &v2},
+		return nodeSet{
+			nodeComparison{gte, &v2},
 		}
 	}
 	if err2 != nil {
 		v2.IncrementMajor()
 		v2.SetMinor(0)
 		v2.SetPatch(0)
-		return []nodeComparison{
-			{gte, v1},
-			{lt, &v2},
+		return nodeSet{
+			nodeComparison{gte, v1},
+			nodeComparison{lt, &v2},
 		}
 	}
 
 	v2.IncrementMinor()
-	return []nodeComparison{
-		{gte, v1},
-		{lt, &v2},
+	return nodeSet{
+		nodeComparison{gte, v1},
+		nodeComparison{lt, &v2},
 	}
 
 }

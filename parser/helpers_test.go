@@ -58,8 +58,5 @@ func TestComparatorFunc(t *testing.T) {
 func TestXRangesConverter(t *testing.T) {
 	i := item{itemAdvanced, "1.x"}
 	c := xr2op(i)
-	for _, v := range c {
-
-		fmt.Println(getFunctionName(v.action), v.arg)
-	}
+	fmt.Println(c)
 }

@@ -180,11 +180,11 @@ var yellow = color.New(color.FgYellow).SprintFunc()
 
 func TestLexer(t *testing.T) {
 	for _, c := range constraints {
-		_, ch := lex(c.value)
+		l := lex(c.value)
 		result := true
 		x := 0
-		for i := range ch {
-
+		for {
+			i := l.nextItem()
 			result = (i.typ != itemError)
 
 			if len(c.result) > x {
@@ -199,6 +199,9 @@ func TestLexer(t *testing.T) {
 				t.Errorf("lex(%v) => %v, want <nil>\n", cyan(c.value), yellow(i))
 			}
 			x++
+			if i.typ == itemEOF || i.typ == itemError {
+				break
+			}
 		}
 		if result != c.expected {
 			t.Errorf("lex(%v) => %t, want %t \n", cyan(c.value), result, c.expected)
@@ -221,12 +224,10 @@ func BenchmarkLexerComplex(b *testing.B) {
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		_, ch := lex(VERSION)
+		l := lex(VERSION)
 		for {
-			_, ok := <-ch
-			if ok == false {
-				//fmt.Printf("%v: '%v' \n", items[s.typ], s)
-				//} else {
+			i := l.nextItem()
+			if i.typ == itemEOF || i.typ == itemError {
 				break
 			}
 		}
@@ -239,12 +240,10 @@ func BenchmarkLexerSimple(b *testing.B) {
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		_, ch := lex(VERSION)
+		l := lex(VERSION)
 		for {
-			_, ok := <-ch
-			if ok == false {
-				//fmt.Printf("%v: '%v' \n", items[s.typ], s)
-				//} else {
+			i := l.nextItem()
+			if i.typ == itemEOF || i.typ == itemError {
 				break
 			}
 		}

@@ -7,12 +7,38 @@ import (
 	"github.com/hansrodtang/semver"
 )
 
+type nodeType int
+
+const (
+	errorNode nodeType = iota
+	rangeNode
+	comparisonNode
+	setNode
+)
+
 type node interface {
 	Run(*semver.Version) bool
 	String() string
+	Type() nodeType
 }
 
 type nodeContainer node
+
+type nodeError struct {
+	error item
+}
+
+func (n nodeError) Run(main *semver.Version) bool {
+	return false
+}
+
+func (n nodeError) String() string {
+	return n.error.String()
+}
+
+func (n nodeError) Type() nodeType {
+	return errorNode
+}
 
 type nodeComparison struct {
 	action comparatorFunc
@@ -33,8 +59,12 @@ func (n nodeComparison) String() string {
 	return ""
 }
 
+func (n nodeComparison) Type() nodeType {
+	return comparisonNode
+}
+
 type nodeRange struct {
-	sets []nodeSet
+	sets []node
 }
 
 func (n nodeRange) Run(main *semver.Version) bool {
@@ -58,12 +88,14 @@ func (n nodeRange) String() string {
 	return b.String()
 }
 
-type nodeSet struct {
-	comparisons []nodeComparison
+func (n nodeRange) Type() nodeType {
+	return rangeNode
 }
 
+type nodeSet []node
+
 func (n nodeSet) Run(main *semver.Version) bool {
-	for _, c := range n.comparisons {
+	for _, c := range n {
 		if c.Run(main) != true {
 			return false
 		}
@@ -73,14 +105,18 @@ func (n nodeSet) Run(main *semver.Version) bool {
 
 func (n nodeSet) String() string {
 	var b bytes.Buffer
-	for i, v := range n.comparisons {
+	for i, v := range n {
 		b.WriteString(v.String())
 
-		if len(n.comparisons)-1 > i {
+		if len(n)-1 > i {
 			b.WriteString(" ")
 		}
 	}
 	return b.String()
+}
+
+func (n nodeSet) Type() nodeType {
+	return setNode
 }
 
 var comparators = map[string]comparatorFunc{

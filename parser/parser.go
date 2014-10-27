@@ -16,10 +16,10 @@ type parser struct {
 func (p *parser) run() (node, error) {
 
 	n := handleRange(p)
-	if n != nil {
+	if n.Type() != errorNode {
 		return n, nil
 	}
-	return nil, errors.New("Something bad")
+	return nil, errors.New(n.String())
 
 }
 
@@ -46,8 +46,8 @@ func Parse(input string) (node, error) {
 
 }
 
-func handleOperator(p *parser) []nodeComparison {
-	var nc []nodeComparison
+func handleOperator(p *parser) node {
+	var set nodeSet
 	for {
 		i := p.next()
 
@@ -58,30 +58,41 @@ func handleOperator(p *parser) []nodeComparison {
 				if i.val == string(operatorHY) {
 					i = p.next()
 					ver2, _ := semver.New(i.val)
-					return hy2op(ver1, ver2)
+					nc := hy2op(ver1, ver2)
+					set = append(set, nc)
+					return set
 				}
 			}
 			p.backup()
-			nc = []nodeComparison{{eq, ver1}}
-			return nc
+			nc := nodeSet{nodeComparison{eq, ver1}}
+			set = append(set, nc)
+			return set
 		case itemAdvanced:
 			if i.val == string(operatorTR) {
 				i := p.next()
-				return tld2op(i)
+				if i.typ != itemError {
+					nc := tld2op(i)
+					set = append(set, nc)
+					return set
+				}
+
 			}
 		case itemXRange:
-			return xr2op(i)
+			nc := xr2op(i)
+			set = append(set, nc)
+			return set
 		default:
 			v := p.next()
 			ver, _ := semver.New(v.val)
-			nc = []nodeComparison{{comparators[i.val], ver}}
-			return nc
+			nc := nodeSet{nodeComparison{comparators[i.val], ver}}
+			set = append(set, nc...)
+			return set
 		}
+
 	}
 }
 
 func handleSet(p *parser) nodeSet {
-	var nc []nodeComparison
 	var set nodeSet
 
 	for {
@@ -97,8 +108,8 @@ func handleSet(p *parser) nodeSet {
 			return set
 		default:
 			p.backup()
-			nc = handleOperator(p)
-			set.comparisons = append(set.comparisons, nc...)
+			nc := handleOperator(p)
+			set = append(set, nc)
 
 		}
 	}
@@ -112,7 +123,7 @@ func handleRange(p *parser) node {
 		i := p.next()
 		switch i.typ {
 		case itemError:
-			return nil
+			return nodeError{i}
 		case itemEOF:
 			return rng
 		default:
