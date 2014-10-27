@@ -298,8 +298,7 @@ func lexAdvancedVersion(l *lexer) stateFn {
 		}
 
 		if !l.accept(dot) {
-			p := l.peek()
-			if !(p == operatorST || p == eof) {
+			if !isEnd(l.peek()) {
 				return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 			}
 			l.emit(itemAdvanced)
