@@ -16,15 +16,17 @@ var items = map[itemType]string{
 	itemEOF:      "itemEOF",
 }
 
+type results []itemType
+
 type lexerTestables struct {
 	expected bool
 	value    string
-	result   []itemType
+	result   results
 }
 
 var constraints = []lexerTestables{
 	{true, "1.0.0 || >=2.5.0 || 5.0.0 - 7.2.3",
-		[]itemType{
+		results{
 			itemVersion,
 			itemRange,
 			itemOperator,
@@ -37,174 +39,86 @@ var constraints = []lexerTestables{
 		},
 	},
 	{true, "~1.2.3",
-		[]itemType{
-			itemAdvanced,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemAdvanced, itemVersion, itemEOF},
 	},
 	{true, "^4.5.2-alpha.1",
-		[]itemType{
-			itemAdvanced,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemAdvanced, itemVersion, itemEOF},
 	},
 	{true, "=2.3.2",
-		[]itemType{
-			itemOperator,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemOperator, itemVersion, itemEOF},
 	},
 	{true, "<=1.2.3",
-		[]itemType{
-			itemOperator,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemOperator, itemVersion, itemEOF},
 	},
 	{true, "5.3.5||4.3.5",
-		[]itemType{
-			itemVersion,
-			itemRange,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemVersion, itemRange, itemVersion, itemEOF},
 	},
 	{true, "5.3.5 ||4.3.5",
-		[]itemType{
-			itemVersion,
-			itemRange,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemVersion, itemRange, itemVersion, itemEOF},
 	},
 	{true, "5.3.5|| 4.3.5",
-		[]itemType{
-			itemVersion,
-			itemRange,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemVersion, itemRange, itemVersion, itemEOF},
 	},
 	{true, "5.3.5 4.3.5",
-		[]itemType{
-			itemVersion,
-			itemSet,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemVersion, itemSet, itemVersion, itemEOF},
 	},
 	{true, ">=1.2.3",
-		[]itemType{
-			itemOperator,
-			itemVersion,
-			itemEOF,
-		},
+		results{itemOperator, itemVersion, itemEOF},
 	},
 	//
 	{false, "~ 1.2.3",
-		[]itemType{
-			itemAdvanced,
-			itemError,
-		},
+		results{itemAdvanced, itemError},
 	},
 	{false, ">= 1.2.3",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{false, "1.2.3 >=",
-		[]itemType{
-			itemVersion,
-			itemSet,
-			itemError,
-		},
+		results{itemVersion, itemSet, itemError},
 	},
 	{false, "5.3.5 |1| 4.3.5",
-		[]itemType{
-			itemVersion,
-			itemError,
-		},
+		results{itemVersion, itemError},
 	},
 	{false, "5. 4.4",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{false, "<1<1",
-		[]itemType{
-			itemOperator,
-			itemError,
-		},
+		results{itemOperator, itemError},
 	},
 	{false, "<1||",
-		[]itemType{
-			itemOperator,
-			itemVersion,
-			itemError,
-		},
+		results{itemOperator, itemVersion, itemError},
 	},
 	{false, "M",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{true, "1.0",
-		[]itemType{
-			itemAdvanced,
-			itemEOF,
-		},
+		results{itemAdvanced, itemEOF},
 	},
 	{true, "1.x",
-		[]itemType{
-			itemAdvanced,
-			itemEOF,
-		},
+		results{itemAdvanced, itemEOF},
 	},
 	{false, "1.x+98uihuhyg",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{true, "1.*.2",
-		[]itemType{
-			itemAdvanced,
-			itemEOF,
-		},
+		results{itemAdvanced, itemEOF},
 	},
 	{true, "1.*.2-beta",
-		[]itemType{
-			itemAdvanced,
-			itemEOF,
-		},
+		results{itemAdvanced, itemEOF},
 	},
 	{true, "*.1.2",
-		[]itemType{
-			itemAdvanced,
-			itemEOF,
-		},
+		results{itemAdvanced, itemEOF},
 	},
 	{false, "1x.2.*",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{false, "1.x2.*",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{false, "1...1",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 	{false, "1.x.",
-		[]itemType{
-			itemError,
-		},
+		results{itemError},
 	},
 }
 
