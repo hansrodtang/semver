@@ -6,15 +6,6 @@ import (
 	"github.com/fatih/color"
 )
 
-var items = map[itemType]string{
-	itemVersion:  "itemVersion",
-	itemOperator: "itemOperator",
-	itemSet:      "itemSet",
-	itemRange:    "itemRange",
-	itemAdvanced: "itemAdvanced",
-	itemError:    "itemError",
-	itemEOF:      "itemEOF",
-}
 
 type results []result
 

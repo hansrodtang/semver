@@ -46,6 +46,16 @@ const (
 	wildcards = "Xx*"
 )
 
+var items = map[itemType]string{
+	itemVersion:  "itemVersion",
+	itemOperator: "itemOperator",
+	itemSet:      "itemSet",
+	itemRange:    "itemRange",
+	itemAdvanced: "itemAdvanced",
+	itemError:    "itemError",
+	itemEOF:      "itemEOF",
+}
+
 type itemType int
 
 type item struct {
@@ -54,13 +64,7 @@ type item struct {
 }
 
 func (i item) String() string {
-	switch {
-	case i.typ == itemEOF:
-		return "EOF"
-	case i.typ == itemError:
-		return i.val
-	}
-	return fmt.Sprintf("%v", i.val)
+	return fmt.Sprintf("%v(%v)", items[i.typ], i.val)
 }
 
 type lexer struct {
