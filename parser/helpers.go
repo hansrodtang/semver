@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/hansrodtang/semver"
@@ -46,45 +46,32 @@ func tld2op(i item) []nodeComparison {
 }
 
 func xr2op(i item) []nodeComparison {
-	r := strings.NewReplacer("x", "*", "X", "*")
 
-	var version string
-
-	version = i.val
-
-	if strings.Contains(version, plus) {
-		output := strings.Split(version, plus)
-		version = output[0]
-	}
-
-	if strings.Contains(version, hyphen) {
-		output := strings.SplitN(version, hyphen, 2)
-		version = output[0]
-	}
-
-	version = r.Replace(version)
-	s := strings.SplitN(version, dot, 3)
+	version := i.val
+	s := strings.Split(version, dot)
 
 	for len(s) < 3 {
 		s = append(s, "*")
 	}
+	major, err1 := strconv.ParseUint(s[0], 10, 0)
+	minor, err2 := strconv.ParseUint(s[1], 10, 0)
+	patch, _ := strconv.ParseUint(s[2], 10, 0)
 
-	version = strings.Join(s, dot)
-	version = strings.Replace(version, "*", "0", 3)
+	v1 := semver.Build(major, minor, patch)
 
-	v1, err := semver.New(version)
-	if err != nil {
-		fmt.Println(err)
-	}
 	v2 := *v1
 
-	if s[0] == "*" {
+	if err1 != nil {
+		v2.SetMinor(0)
+		v2.SetPatch(0)
 		return []nodeComparison{
-			{gte, v1},
+			{gte, &v2},
 		}
 	}
-	if s[1] == "*" {
+	if err2 != nil {
 		v2.IncrementMajor()
+		v2.SetMinor(0)
+		v2.SetPatch(0)
 		return []nodeComparison{
 			{gte, v1},
 			{lt, &v2},
