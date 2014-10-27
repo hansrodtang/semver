@@ -6,13 +6,7 @@ import (
 	"github.com/fatih/color"
 )
 
-
-type results []result
-
-type result struct {
-	itype itemType
-	value string
-}
+type results []item
 
 type lexerTestables struct {
 	expected bool
@@ -173,9 +167,9 @@ func init() {
 	// Appends appropriate end token based on expected result.
 	for _, c := range constraints {
 		if c.expected {
-			c.result = append(c.result, result{itemEOF, ""})
+			c.result = append(c.result, item{itemEOF, ""})
 		} else {
-			c.result = append(c.result, result{itemError, ""})
+			c.result = append(c.result, item{itemError, ""})
 		}
 	}
 }
@@ -193,15 +187,15 @@ func TestLexer(t *testing.T) {
 			result = (i.typ != itemError)
 
 			if len(c.result) > x {
-				if i.typ != c.result[x].itype {
-					t.Errorf("lex(%v) => %v(%v), want %v(%v) \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x].itype], yellow(c.result[x].value))
-				} else if i.val != c.result[x].value {
+				if i.typ != c.result[x].typ {
+					t.Errorf("lex(%v) => %v, want %v \n", cyan(c.value), yellow(i), yellow(c.result[x]))
+				} else if i.val != c.result[x].val {
 					if !(i.typ == itemError || i.typ == itemEOF) {
-						t.Errorf("lex(%v) => %v(%v), want %v(%v) \n", cyan(c.value), items[i.typ], yellow(i), items[c.result[x].itype], yellow(c.result[x].value))
+						t.Errorf("lex(%v) => %v, want %v \n", cyan(c.value), yellow(i), yellow(c.result[x]))
 					}
 				}
 			} else {
-				t.Errorf("lex(%v) => %v(%v), want <nil>\n", cyan(c.value), items[i.typ], yellow(i))
+				t.Errorf("lex(%v) => %v, want <nil>\n", cyan(c.value), yellow(i))
 			}
 			x++
 		}
