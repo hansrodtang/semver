@@ -270,3 +270,34 @@ func lexAdvancedRange(l *lexer) stateFn {
 	}
 	return lexMain
 }
+
+func lexAdvancedVersion(l *lexer) stateFn {
+
+	for i := 0; i <= 2; i++ {
+		if !l.accept(wildcards) {
+			if !l.accept(numbers) {
+				return l.errorf("invalidc character:%v: %q", l.pos, string(l.next()))
+			}
+			l.acceptRun(numbers)
+		}
+		if i == 2 {
+			if l.accept("+-") {
+				l.acceptRun(allchars)
+			}
+
+			l.emit(itemAdvanced)
+			return lexMain
+		}
+
+		if !l.accept(dot) {
+			p := l.peek()
+			if !(p == operatorST || p == eof) {
+				return l.errorf("invalidc character:%v: %q", l.pos, string(l.next()))
+			}
+			l.emit(itemAdvanced)
+			return lexMain
+		}
+	}
+	return nil
+
+}
