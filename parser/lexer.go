@@ -290,11 +290,14 @@ func lexAdvancedVersion(l *lexer) stateFn {
 		}
 		if i == 2 {
 			if l.accept("+-") {
+				if !l.accept(allchars) {
+					return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+				}
 				l.acceptRun(allchars)
-			}
 
-			l.emit(itemAdvanced)
-			return lexMain
+				l.emit(itemAdvanced)
+				return lexMain
+			}
 		}
 
 		if !l.accept(dot) {
