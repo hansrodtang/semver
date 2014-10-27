@@ -43,7 +43,7 @@ var parsables = map[string][]test{
 		{true, semver.Build(1, 1, 5)},
 		{true, semver.Build(1, 9, 7)},
 	},
-	"~1.2.3": {
+	"ø1.1.3": {
 		{false, semver.Build(1, 3, 2)},
 		{false, semver.Build(1, 2, 2)},
 		{true, semver.Build(1, 2, 5)},
@@ -60,10 +60,14 @@ var parsables = map[string][]test{
 func TestParser(t *testing.T) {
 
 	for k, v := range parsables {
-		n, _ := Parse(k)
-		for _, x := range v {
-			if response := n.Run(x.version); response != x.expected {
-				t.Errorf("%q.Run(%q) => %t, want %t", k, x.version, response, x.expected)
+		n, err := Parse(k)
+		if err != nil {
+			t.Error(err)
+		} else {
+			for _, x := range v {
+				if response := n.Run(x.version); response != x.expected {
+					t.Errorf("%q.Run(%q) => %t, want %t", k, x.version, response, x.expected)
+				}
 			}
 		}
 	}
