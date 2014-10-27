@@ -161,6 +161,32 @@ func TestSetters(t *testing.T) {
 	}
 }
 
+func TestIncrementers(t *testing.T) {
+	ver := semver.Build(1, 2, 3)
+	ver.IncrementMajor()
+	ver.IncrementMinor()
+	ver.IncrementPatch()
+
+	expected := "2.3.4"
+	result := fmt.Sprint(ver)
+	if result != expected {
+		t.Errorf("Stringer() => %q, wanted %q", result, expected)
+	}
+}
+
+func TestDecrementers(t *testing.T) {
+	ver := semver.Build(1, 2, 3)
+	ver.DecrementMajor()
+	ver.DecrementMinor()
+	ver.DecrementPatch()
+
+	expected := "0.1.2"
+	result := fmt.Sprint(ver)
+	if result != expected {
+		t.Errorf("Stringer() => %q, wanted %q", result, expected)
+	}
+}
+
 func TestNew(t *testing.T) {
 	expected := "1.0.3-alpha.1+35.45"
 

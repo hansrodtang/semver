@@ -133,6 +133,16 @@ func (v *Version) SetMajor(major uint64) {
 	v.major = major
 }
 
+// IncrementMajor increases Major version by 1.
+func (v *Version) IncrementMajor() {
+	v.major++
+}
+
+// DecrementMajor decreases Major version by 1.
+func (v *Version) DecrementMajor() {
+	v.major--
+}
+
 // Minor returns the minor version.
 func (v Version) Minor() uint64 {
 	return v.minor
@@ -143,6 +153,16 @@ func (v *Version) SetMinor(minor uint64) {
 	v.minor = minor
 }
 
+// IncrementMinor increases Minor version by 1.
+func (v *Version) IncrementMinor() {
+	v.minor++
+}
+
+// DecrementMinor decreases Minor version by 1.
+func (v *Version) DecrementMinor() {
+	v.minor--
+}
+
 // Patch returns the patch version.
 func (v Version) Patch() uint64 {
 	return v.patch
@@ -151,6 +171,16 @@ func (v Version) Patch() uint64 {
 // SetPatch accepts a uint64 to change the currently set patch version.
 func (v *Version) SetPatch(patch uint64) {
 	v.patch = patch
+}
+
+// IncrementPatch increases Patch version by 1.
+func (v *Version) IncrementPatch() {
+	v.patch++
+}
+
+// DecrementPatch decreases Patch version by 1.
+func (v *Version) DecrementPatch() {
+	v.patch--
 }
 
 // Prerelease returns the prerelease identifiers as a dot seperated string.
