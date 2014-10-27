@@ -2,18 +2,10 @@ package parser
 
 import (
 	"fmt"
-	"reflect"
-	"runtime"
-	"strings"
 	"testing"
 
 	"github.com/hansrodtang/semver"
 )
-
-func getFunctionName(i interface{}) string {
-	fname := strings.Split(runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name(), ".")
-	return fname[len(fname)-1]
-}
 
 func TestComparators(t *testing.T) {
 	ver1 := semver.Build(1, 2, 4)

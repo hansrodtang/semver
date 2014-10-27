@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"reflect"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -94,4 +96,9 @@ func xr2op(i item) []nodeComparison {
 		{lt, &v2},
 	}
 
+}
+
+func getFunctionName(i interface{}) string {
+	fname := strings.Split(runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name(), ".")
+	return fname[len(fname)-1]
 }
