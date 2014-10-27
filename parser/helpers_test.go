@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"reflect"
 	"runtime"
 	"strings"
@@ -59,5 +60,13 @@ func TestComparatorFunc(t *testing.T) {
 		if !response {
 			t.Errorf("%v(%q,%q): => %t, want %t", getFunctionName(f), ver, v, response, expected)
 		}
+	}
+}
+
+func TestXRangesConverter(t *testing.T) {
+	i := item{itemAdvanced, "1.1-234+343"}
+	c := xr2op(i)
+	for _, v := range c {
+		fmt.Println(v.arg)
 	}
 }
