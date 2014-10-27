@@ -184,8 +184,8 @@ func lexMain(l *lexer) stateFn {
 }
 
 func lexVersion(l *lexer) stateFn {
-	l.acceptRun(numbers)
 
+	l.acceptRun(numbers)
 	if l.accept(dot) {
 		if l.accept(numbers) {
 			l.acceptRun(numbers)
