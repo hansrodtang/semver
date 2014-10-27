@@ -61,6 +61,9 @@ var constraints = []*lexerTestables{
 	{true, "5.3.5|| 4.3.5",
 		results{itemVersion, itemRange, itemVersion},
 	},
+	{false, "5.3.5||  4.3.5",
+		results{itemVersion, itemRange},
+	},
 	// Tilde and Caret Ranges
 	{false, "~ 1.2.3",
 		results{itemAdvanced},
@@ -73,6 +76,10 @@ var constraints = []*lexerTestables{
 	},
 	{false, ">= 1.2.3",
 		results{},
+	},
+	// Hyphen Range
+	{false, "1.2.3 -3.2.5",
+		results{itemVersion, itemAdvanced},
 	},
 	// X-Ranges
 	{true, "*",
@@ -122,6 +129,9 @@ var constraints = []*lexerTestables{
 	},
 
 	// Assorted syntax errors
+	{false, "1.2.3-",
+		results{},
+	},
 	{false, "1.2.3 >=",
 		results{itemVersion, itemSet},
 	},
@@ -138,7 +148,7 @@ var constraints = []*lexerTestables{
 		results{itemOperator},
 	},
 	{false, "<1||",
-		results{itemOperator, itemVersion},
+		results{itemOperator, itemAdvanced, itemRange},
 	},
 	{false, "M",
 		results{},
