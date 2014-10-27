@@ -42,7 +42,17 @@ func cr2op(i item) []nodeComparison {
 }
 
 func tld2op(i item) []nodeComparison {
-	return nil
+	if i.typ == itemXRange {
+		return xr2op(i)
+	}
+	v1, _ := semver.New(i.val)
+	v2 := *v1
+	v2.IncrementMinor()
+	v2.SetPatch(0)
+	return []nodeComparison{
+		{gte, v1},
+		{lt, &v2},
+	}
 }
 
 func xr2op(i item) []nodeComparison {
