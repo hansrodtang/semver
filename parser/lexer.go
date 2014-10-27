@@ -248,6 +248,9 @@ func lexRange(l *lexer) stateFn {
 			l.next()
 			l.ignore()
 		}
+		if isEnd(l.peek()) {
+			return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+		}
 		return lexMain
 	}
 	return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
