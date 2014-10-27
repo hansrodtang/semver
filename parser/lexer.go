@@ -263,8 +263,8 @@ func lexRange(l *lexer) stateFn {
 
 func lexAdvancedRange(l *lexer) stateFn {
 	if l.accept(string(operatorHY)) {
-		l.emit(itemAdvanced)
 		if l.peek() == operatorST {
+			l.emit(itemAdvanced)
 			l.next()
 			l.ignore()
 		} else {
