@@ -121,6 +121,10 @@ func (l *lexer) backup() {
 	l.pos -= l.width
 }
 
+func (l *lexer) rewind() {
+	l.pos = l.start
+}
+
 // accept consumes the next rune
 // if it's from the valid set.
 func (l *lexer) accept(valid string) bool {
@@ -211,7 +215,7 @@ func lexVersion(l *lexer) stateFn {
 			}
 		}
 	}
-	l.pos = l.start
+	l.rewind()
 	return lexAdvancedVersion
 }
 
