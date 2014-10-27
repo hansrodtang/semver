@@ -263,6 +263,8 @@ func lexAdvancedRange(l *lexer) stateFn {
 		if l.peek() == operatorST {
 			l.next()
 			l.ignore()
+		} else {
+			return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 		}
 		return lexMain
 	}
