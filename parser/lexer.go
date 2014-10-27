@@ -10,6 +10,7 @@ type stateFn func(*lexer) stateFn
 
 const (
 	itemVersion  itemType = iota // Version string
+	itemXRange                   // Version partials
 	itemOperator                 // <, <=, >, >= =
 	itemSet                      // Set seperated by whitespace
 	itemRange                    // || ,
@@ -48,6 +49,7 @@ const (
 
 var items = map[itemType]string{
 	itemVersion:  "itemVersion",
+	itemXRange:   "itemXRange",
 	itemOperator: "itemOperator",
 	itemSet:      "itemSet",
 	itemRange:    "itemRange",
@@ -312,11 +314,11 @@ func lexAdvancedVersion(l *lexer) stateFn {
 			l.acceptRun(numbers)
 			l.accept(dot)
 		} else {
-			l.emit(itemAdvanced)
+			l.emit(itemXRange)
 			break
 		}
 		if isEnd(l.peek()) {
-			l.emit(itemAdvanced)
+			l.emit(itemXRange)
 			break
 		}
 	}
