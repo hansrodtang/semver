@@ -261,13 +261,14 @@ func lexAdvancedRange(l *lexer) stateFn {
 		}
 		return lexMain
 	}
-	if l.accept(string(operatorCR)) {
+	if l.accept(string(operatorCR) + string(operatorTR)) {
 		l.emit(itemAdvanced)
-		return lexMain
+
+		if !l.check(numbers) {
+			return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+		}
 	}
-	if l.accept(string(operatorTR)) {
-		l.emit(itemAdvanced)
-	}
+
 	return lexMain
 }
 
