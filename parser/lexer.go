@@ -271,7 +271,7 @@ func lexAdvancedVersion(l *lexer) stateFn {
 	for i := 0; i <= 2; i++ {
 		if !l.accept(wildcards) {
 			if !l.accept(numbers) {
-				return l.errorf("invalidc character:%v: %q", l.pos, string(l.next()))
+				return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 			}
 			l.acceptRun(numbers)
 		}
@@ -287,7 +287,7 @@ func lexAdvancedVersion(l *lexer) stateFn {
 		if !l.accept(dot) {
 			p := l.peek()
 			if !(p == operatorST || p == eof) {
-				return l.errorf("invalidc character:%v: %q", l.pos, string(l.next()))
+				return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 			}
 			l.emit(itemAdvanced)
 			return lexMain
