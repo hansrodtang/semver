@@ -154,36 +154,27 @@ func (l *lexer) errorf(format string, args ...interface{}) stateFn {
 }
 
 func lexMain(l *lexer) stateFn {
-	switch r := l.next(); {
+	switch r := l.peek(); {
 
 	case r == eof || r == '\n':
 		l.emit(itemEOF) // Useful to make EOF a token.
 		return nil      // Stop the run loop.
 
 	case '0' <= r && r <= '9':
-		l.backup()
 		return lexVersion
-
 	case r == operatorLT:
-		l.backup()
 		return lexOperator
 	case r == operatorGT:
-		l.backup()
 		return lexOperator
 	case r == operatorEQ:
-		l.backup()
 		return lexOperator
 	case r == operatorTR:
-		l.backup()
 		return lexAdvancedRange
 	case r == operatorCR:
-		l.backup()
 		return lexAdvancedRange
 	case r == operatorRG:
-		l.backup()
 		return lexRange
 	case r == operatorST:
-		l.backup()
 		return lexSet
 	case l.check(wildcards):
 		return lexAdvancedVersion
