@@ -264,3 +264,13 @@ func BenchmarkCompareAverage(b *testing.B) {
 		comparisons[n%l].main.Compare(comparisons[n%l].other)
 	}
 }
+
+func ExampleCompare() {
+	v1, _ := semver.New("1.6.0")
+	v2, _ := semver.New("1.5.0")
+	// do something with error
+	if v1.Compare(v2) > 0 {
+		fmt.Println("v1 is larger")
+	}
+	// Output: v1 is larger
+}
