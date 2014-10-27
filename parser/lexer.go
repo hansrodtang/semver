@@ -195,8 +195,16 @@ func lexVersion(l *lexer) stateFn {
 					l.acceptRun(numbers)
 
 					if l.accept("+-") {
+						if !l.accept(allchars) {
+							return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+						}
 						l.acceptRun(allchars)
 					}
+
+					if !isEnd(l.peek()) {
+						return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
+					}
+
 					l.emit(itemVersion)
 					return lexMain
 				}
