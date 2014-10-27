@@ -284,7 +284,7 @@ func lexAdvancedRange(l *lexer) stateFn {
 }
 
 func lexAdvancedVersion(l *lexer) stateFn {
-
+	// Syntax check
 	for i := 0; i <= 2; i++ {
 		if !l.accept(wildcards) {
 			if !l.accept(numbers) {
@@ -297,11 +297,32 @@ func lexAdvancedVersion(l *lexer) stateFn {
 			if !isEnd(l.peek()) {
 				return l.errorf("invalid character:%v: %q", l.pos, string(l.next()))
 			}
-			l.emit(itemAdvanced)
-			return lexMain
+			l.rewind()
+			break
 		}
 	}
-	return nil
+
+	// Generate item
+	for i := 0; i <= 2; i++ {
+		if !l.accept(wildcards) {
+			l.acceptRun(numbers)
+			l.accept(dot)
+		} else {
+			l.emit(itemAdvanced)
+			break
+		}
+		if isEnd(l.peek()) {
+			l.emit(itemAdvanced)
+			break
+		}
+	}
+
+	for !isEnd(l.next()) {
+	}
+	l.backup()
+	l.ignore()
+
+	return lexMain
 
 }
 
