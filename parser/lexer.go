@@ -90,7 +90,6 @@ func (l *lexer) run() {
 	for state := lexMain; state != nil; {
 		state = state(l)
 	}
-	close(l.items) // No more tokens will be delivered.
 }
 
 func (l *lexer) nextItem() item {
