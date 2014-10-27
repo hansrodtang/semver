@@ -70,7 +70,6 @@ func (i item) String() string {
 }
 
 type lexer struct {
-	name  string    // used only for error reports.
 	input string    // the string being scanned.
 	start int       // start position of this item.
 	pos   int       // current position in the input.
@@ -78,13 +77,13 @@ type lexer struct {
 	items chan item // channel of scanned items.
 }
 
-func lex(input string) (*lexer, chan item) {
+func lex(input string) *lexer {
 	l := &lexer{
 		input: input,
 		items: make(chan item),
 	}
 	go l.run() // Concurrently run state machine.
-	return l, l.items
+	return l
 }
 
 func (l *lexer) run() {
@@ -92,6 +91,10 @@ func (l *lexer) run() {
 		state = state(l)
 	}
 	close(l.items) // No more tokens will be delivered.
+}
+
+func (l *lexer) nextItem() item {
+	return <-l.items
 }
 
 // emit passes an item back to the client.

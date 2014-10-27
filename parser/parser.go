@@ -3,7 +3,7 @@ package parser
 import "github.com/hansrodtang/semver"
 
 type parser struct {
-	items  chan item // channel of scanned items.
+	l      *lexer
 	result node
 	ibuf   []item
 	pos    int
@@ -17,7 +17,7 @@ func (p *parser) run() (node, error) {
 
 func (p *parser) next() item {
 	if p.pos >= len(p.ibuf) {
-		i := <-p.items
+		i := l.nextItem()
 		p.ibuf = append(p.ibuf, i)
 		p.pos++
 		return i
@@ -32,8 +32,8 @@ func (p *parser) backup() {
 }
 
 func Parse(input string) (node, error) {
-	_, ch := lex(input)
-	p := &parser{ch, nil, []item{}, 0}
+	l := lex(input)
+	p := &parser{l, nil, []item{}, 0}
 	return p.run()
 
 }
