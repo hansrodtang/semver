@@ -122,6 +122,7 @@ var constraints = []*lexerTestables{
 }
 
 func init() {
+	// Appends appropriate end token based on expected result.
 	for _, c := range constraints {
 		if c.expected {
 			c.result = append(c.result, itemEOF)
