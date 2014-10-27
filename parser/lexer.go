@@ -308,3 +308,7 @@ func lexAdvancedVersion(l *lexer) stateFn {
 	return nil
 
 }
+
+func isEnd(r rune) bool {
+	return (r == operatorST || r == eof || r == operatorRG)
+}
