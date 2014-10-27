@@ -7,8 +7,8 @@ before_script:
 - go get github.com/modocache/gover
 - go get github.com/mattn/goveralls
 script:
-- go test -coverprofile semver.coverprofile
-- go test -coverprofile parser.coverprofile ./parser
+- go test -covermode=count -coverprofile semver.coverprofile
+- go test -covermode=count -coverprofile parser.coverprofile ./parser
 - gover
 - "$HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -repotoken $COVERALLS_TOKEN"
 env:
