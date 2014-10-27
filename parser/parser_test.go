@@ -43,7 +43,7 @@ var parsables = map[string][]test{
 		{true, semver.Build(1, 1, 5)},
 		{true, semver.Build(1, 9, 7)},
 	},
-	"ø1.1.3": {
+	"~1.2.3": {
 		{false, semver.Build(1, 3, 2)},
 		{false, semver.Build(1, 2, 2)},
 		{true, semver.Build(1, 2, 5)},
