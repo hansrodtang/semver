@@ -14,6 +14,10 @@ func alphanumeric(r rune) bool {
 	return (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || (r == '-')
 }
 
+func numbers(r rune) bool {
+	return (r >= '0' && r <= '9')
+}
+
 func hasLeadingZero(number string) bool {
 	if len(number) > 1 {
 		if strings.HasPrefix(number, "0") {
