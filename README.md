@@ -3,6 +3,7 @@
 [![Build](https://img.shields.io/travis/hansrodtang/semver.svg?style=flat)](https://travis-ci.org/hansrodtang/semver) [![Coverage](https://img.shields.io/coveralls/hansrodtang/semver.svg?style=flat)](https://coveralls.io/r/hansrodtang/semver) [![Issues](https://img.shields.io/github/issues/hansrodtang/semver.svg?style=flat)](https://github.com/hansrodtang/semver/issues) [![Tip](https://img.shields.io/gratipay/hansrodtang.svg?style=flat)](https://gratipay.com/hansrodtang/)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 [![Documentation](http://img.shields.io/badge/documentation-GoDoc-blue.svg?style=flat)](http://godoc.org/github.com/hansrodtang/semver)
+[![Chat](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat)](https://gitter.im/hansrodtang/semver)
 
 A [Semantic Versioning](http://semver.org/) library for [Go](http://golang.org).
 
