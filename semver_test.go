@@ -241,6 +241,8 @@ func TestSetPrerelease(t *testing.T) {
 
 func BenchmarkParseSimple(b *testing.B) {
 	const VERSION = "0.0.1"
+
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		semver.New(VERSION)
@@ -249,6 +251,8 @@ func BenchmarkParseSimple(b *testing.B) {
 
 func BenchmarkParseComplex(b *testing.B) {
 	const VERSION = "0.0.1-alpha.preview+123.456"
+
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		semver.New(VERSION)
@@ -257,6 +261,8 @@ func BenchmarkParseComplex(b *testing.B) {
 
 func BenchmarkParseAverage(b *testing.B) {
 	l := len(correctVersions)
+
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		semver.New(correctVersions[n%l])
@@ -266,6 +272,8 @@ func BenchmarkParseAverage(b *testing.B) {
 func BenchmarkCompareSimple(b *testing.B) {
 	const VERSION = "0.0.1"
 	v, _ := semver.New(VERSION)
+
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		v.Compare(v)
@@ -277,6 +285,8 @@ func BenchmarkCompareComplex(b *testing.B) {
 	const VERSION2 = "0.0.1-alpha.preview+123.456"
 	v, _ := semver.New(VERSION)
 	v2, _ := semver.New(VERSION2)
+
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		v.Compare(v2)
@@ -285,6 +295,8 @@ func BenchmarkCompareComplex(b *testing.B) {
 
 func BenchmarkCompareAverage(b *testing.B) {
 	l := len(comparisons)
+
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		comparisons[n%l].main.Compare(comparisons[n%l].other)
