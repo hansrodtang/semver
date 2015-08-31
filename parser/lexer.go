@@ -171,18 +171,11 @@ func lexMain(l *lexer) stateFn {
 	case r == eof || r == '\n':
 		l.emit(itemEOF) // Useful to make EOF a token.
 		return nil      // Stop the run loop.
-
 	case '0' <= r && r <= '9':
 		return lexVersion
-	case r == operatorLT:
+	case r == operatorLT || r == operatorGT || r == operatorEQ:
 		return lexOperator
-	case r == operatorGT:
-		return lexOperator
-	case r == operatorEQ:
-		return lexOperator
-	case r == operatorTR:
-		return lexAdvancedRange
-	case r == operatorCR:
+	case r == operatorTR || r == operatorCR:
 		return lexAdvancedRange
 	case r == operatorRG:
 		return lexRange
