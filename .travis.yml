@@ -10,7 +10,7 @@ script:
 - go test -covermode=count -coverprofile semver.coverprofile
 - go test -covermode=count -coverprofile parser.coverprofile ./parser
 - gover
-- "$HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -repotoken $COVERALLS_TOKEN"
+- "$HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -service=travis-ci
 env:
   global:
     secure: FgUeV1mEfl8AWJYg6Atk8oW5nbiKpfBpEH9X255HGGPCjM2UMUvamLEmX0qzme+lrIL/QiptZIsiVm2anhoB8R/iJ2vVyEHB/bq4k+V3B5zqRhgMSovLg3Z4q8iVs4Iy++FZgz5jUd+WkZGcwslQJ9vWgyLnV7i80DvDiHw5KMM=
