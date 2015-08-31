@@ -76,6 +76,7 @@ func TestParser(t *testing.T) {
 func BenchmarkParser(b *testing.B) {
 	const VERSION = "1.2.7 || >=1.2.9 <2.0.0"
 
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		Parse(VERSION)
@@ -87,6 +88,7 @@ func BenchmarkRunner(b *testing.B) {
 	p, _ := Parse(VERSION)
 	v := semver.Build(2, 0, 0)
 
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		p.Run(v)

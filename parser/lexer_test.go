@@ -222,6 +222,7 @@ func TestStringer(t *testing.T) {
 func BenchmarkLexerComplex(b *testing.B) {
 	const VERSION = "1.0.0 || >=2.5.0 || 5.0.0 - 7.2.3 || ~4.3.1 ^2.1.1"
 
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		l := lex(VERSION)
@@ -238,6 +239,7 @@ func BenchmarkLexerComplex(b *testing.B) {
 func BenchmarkLexerSimple(b *testing.B) {
 	const VERSION = "1.0.0"
 
+	b.ReportAllocs()
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		l := lex(VERSION)
